@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101418">
 <title>线性电路分析 · 可视化课堂</title>
 <meta name="description" content="用可视化与互动，把《线性电路分析》从水管类比讲到双口网络与变压器。">
 <style>
@@ -405,6 +406,83 @@ html{scroll-padding-top:78px}
 .graph-hint span::before{content:"·";margin-right:6px;color:#2dd4bf}
 
 .tex-inline{white-space:nowrap}
+
+/* ===== mobile refinements ===== */
+@media(max-width:640px){
+  html,body{overflow-x:hidden}
+  .hero-inner{padding:54px 18px 44px}
+  .hero h1{font-size:clamp(32px,10vw,44px);line-height:1.06}
+  .hero p{font-size:15px;line-height:1.72;max-width:none}
+  .kicker{font-size:10px;letter-spacing:.1em;padding:6px 10px;margin-bottom:18px}
+  .hero-actions{gap:10px}
+  .btn{padding:11px 16px;font-size:13px}
+  .hero-meta{gap:14px 20px;margin-top:32px}
+  .hero-meta div{flex:0 0 auto;white-space:normal}
+  .hero-meta b{font-size:20px}
+  .layout{grid-template-columns:1fr;gap:18px;padding:16px 14px 64px}
+  .sidebar{top:0;margin:0 -14px;padding:7px 0}
+  .nav{padding:0 14px;gap:2px;overscroll-behavior-x:contain}
+  .nav a{font-size:12px;padding:8px 9px;gap:6px}
+  .overview{padding:24px 10px 0}
+  .overview-inner{padding:18px 14px;border-radius:20px}
+  .ov-head h2{font-size:28px}
+  .ov-head p{font-size:13px;line-height:1.7}
+  .graph-wrap{border-radius:12px}
+  #graphCanvas{height:430px;aspect-ratio:auto}
+  .graph-hint{left:10px;bottom:8px;gap:8px;font-size:9px;line-height:1.5}
+  .part-legend{gap:7px 11px;justify-content:flex-start;padding:0 12px;font-size:11px}
+  .chapter-head{gap:10px}
+  .chapter-num{font-size:44px!important;line-height:1}
+  .chapter-head h2{font-size:22px;margin-top:4px}
+  .chapter-head .tag{font-size:10px;letter-spacing:.08em}
+  .lead{font-size:15px;line-height:1.75}
+  .chapter p,.chapter li{font-size:14.5px;line-height:1.85}
+  .split,.deep-grid,.figure-row,.math-grid,.formula-grid,.photo-row{grid-template-columns:1fr!important}
+  .figure{padding:10px;border-radius:12px}
+  .figimg{max-height:230px}
+  .figpair{grid-template-columns:1fr;gap:8px}
+  .figpair img{max-height:200px}
+  .widget{padding:13px;border-radius:14px}
+  .widget h3{font-size:12.5px}
+  .widget .hint{font-size:11.5px;line-height:1.6}
+  .control{grid-template-columns:64px minmax(0,1fr) 52px;gap:6px;font-size:12px}
+  .control output{font-size:11px}
+  .chip{font-size:11px;padding:4px 9px}
+  .readout{gap:7px}
+  .eq{font-size:12.5px;padding:10px 11px;line-height:1.8}
+  .deep .eq,.math-card .eq,.deriv .eq{font-size:12.5px!important;padding:9px 10px}
+  .formula-card{padding:12px}
+  .formula-card p{font-size:12.5px;overflow-x:auto}
+  table{display:block;overflow-x:auto;white-space:nowrap;font-size:12.5px}
+  .photo img,.photo.render3d img{max-height:300px}
+  .photo figcaption,.figure figcaption{font-size:11.5px}
+  .foot{padding:8px 16px 48px;font-size:12px}
+  .part-legend .lg-r,.part-legend .lg-c,.part-legend .lg-l,.part-legend .lg-v,.part-legend .lg-i,.part-legend .lg-o{width:14px}
+  .tex-inline{max-width:100%;overflow-x:auto}
+}
+@media(max-width:400px){
+  .hero-meta{gap:12px 16px}
+  .hero-meta b{font-size:18px}
+  .chapter-num{font-size:38px!important}
+  #graphCanvas{height:390px}
+}
+
+.layout,.sidebar,main,.nav{min-width:0}
+.sidebar{max-width:100vw}
+
+@media(max-width:640px){.graph-hint{display:none}}
+
+@media(max-width:640px){.formula-card{overflow-x:auto}.formula-card p{overflow:visible}}
+
+@media(max-width:640px){#graphCanvas{touch-action:pan-y}}
+
+@media(max-width:640px){
+  .hero-inner{padding-top:calc(54px + env(safe-area-inset-top))}
+  .sidebar{padding-top:calc(7px + env(safe-area-inset-top))}
+  .foot{padding-bottom:calc(48px + env(safe-area-inset-bottom))}
+}
+
+@media(max-width:640px){.widget .eq{font-size:11.5px!important;line-height:1.7}}
 
 </style>
 <script>document.documentElement.classList.add("js");</script>
@@ -3191,8 +3269,9 @@ html{scroll-padding-top:78px}
 
       resBox(ctx, (x0 + xm) / 2, y0, Math.min(70, (xm - x0) * 0.4), 22, 'R₁=2Ω');
       resBox(ctx, (xm + x1) / 2, y0, Math.min(70, (x1 - xm) * 0.4), 22, 'R₃=3Ω');
-      resBox(ctx, xm, (y0 + y1) / 2, 22, Math.min(64, (y1 - y0) * 0.35), 'R₂=' + state.r2 + 'Ω');
-      resBox(ctx, x1, (y0 + y1) / 2, 22, Math.min(64, (y1 - y0) * 0.35), 'R₄=6Ω');
+      const smallM = w < 430;
+      resBox(ctx, xm, (y0 + y1) / 2, 22, Math.min(64, (y1 - y0) * 0.35), smallM ? 'R₂' : ('R₂=' + state.r2 + 'Ω'));
+      resBox(ctx, x1, (y0 + y1) / 2, 22, Math.min(64, (y1 - y0) * 0.35), smallM ? 'R₄' : 'R₄=6Ω');
 
       const sy = (y0 + y1) / 2;
       ctx.save();
@@ -3245,8 +3324,8 @@ html{scroll-padding-top:78px}
         ctx.beginPath(); ctx.arc(x1, y0, 8 + pulse, 0, Math.PI * 2);
         ctx.strokeStyle = TEAL; ctx.lineWidth = 1.6; ctx.stroke();
         font(ctx, 11, 700); ctx.fillStyle = TEAL_DARK; ctx.textAlign = 'center';
-        ctx.fillText('vA=' + res.va.toFixed(2) + 'V', xm, y0 - 18);
-        ctx.fillText('vB=' + res.vb.toFixed(2) + 'V', x1 - 38, y0 - 18);
+        ctx.fillText(smallM ? 'vA' : ('vA=' + res.va.toFixed(2) + 'V'), xm, y0 - 18);
+        ctx.fillText(smallM ? 'vB' : ('vB=' + res.vb.toFixed(2) + 'V'), x1, y0 - 18);
         const bh = (y1 - y0) * 0.55;
         const hA = Math.max(4, Math.min(bh, res.va / state.vs * bh));
         const hB = Math.max(4, Math.min(bh, res.vb / state.vs * bh));
@@ -3881,17 +3960,20 @@ html{scroll-padding-top:78px}
       ['math', 'formula'], ['laws', 'active'], ['firstorder', 'secondorder']
     ];
     const colors = { base: '#2dd4bf', laws: '#f59e0b', active: '#f472b6', dyn: '#a78bfa', ac: '#38bdf8', xform: '#f97316', out: '#fbbf24' };
+    const shortLabels = {math:'数学',intro:'电路',quantities:'三量',laws:'KCL',equivalent:'等效',methods:'节点',active:'受控',storage:'储能',firstorder:'一阶',secondorder:'二阶',phasor:'相量',power:'功率',frequency:'频率',laplace:'拉氏',fourier:'傅氏',twoport:'双口',formula:'公式'};
     const byId = {}, degree = {};
     nodes.forEach(function (n) { byId[n.id] = n; n.vx = 0; n.vy = 0; degree[n.id] = 0; });
     edges.forEach(function (e) { degree[e[0]]++; degree[e[1]]++; });
-    nodes.forEach(function (n) { n.r = 18 + Math.min(14, degree[n.id] * 1.8); });
+    nodes.forEach(function (n) { n.r = 18; n.short = shortLabels[n.id] || n.label; });
 
-    let W = 0, H = 0, hover = null, drag = null, dragMoved = 0, last = performance.now();
+    let W = 0, H = 0, narrow = false, hover = null, drag = null, dragMoved = 0, last = performance.now();
 
     function init() {
       const f = fit(c);
       if (!f) return;
       W = f.w; H = f.h;
+      narrow = W < 600;
+      nodes.forEach(function (n) { n.r = (narrow ? 9.5 : 18) + Math.min(narrow ? 6 : 14, degree[n.id] * (narrow ? 1.1 : 1.8)); });
       const cx = W / 2, cy = H / 2 + 4;
       const rad = Math.min(W, H) * 0.40;
       nodes.forEach(function (n, i) {
@@ -3913,7 +3995,7 @@ html{scroll-padding-top:78px}
           let d2 = dx * dx + dy * dy;
           if (d2 < 1) d2 = 1;
           const d = Math.sqrt(d2);
-          const f = Math.min(900, 5200 / d2);
+          const f = Math.min(900, (narrow ? 2400 : 5200) / d2);
           const fx = (dx / d) * f, fy = (dy / d) * f;
           a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
         }
@@ -3922,7 +4004,7 @@ html{scroll-padding-top:78px}
         const a = byId[e[0]], b = byId[e[1]];
         const dx = b.x - a.x, dy = b.y - a.y;
         const d = Math.sqrt(dx * dx + dy * dy) || 1;
-        const target = 185;
+        const target = narrow ? 92 : 185;
         const f = (d - target) * 0.012;
         const fx = (dx / d) * f, fy = (dy / d) * f;
         a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
@@ -3932,7 +4014,7 @@ html{scroll-padding-top:78px}
         n.vy += (cy - n.y) * 0.0016;
         n.vx *= 0.86; n.vy *= 0.86;
         n.x += n.vx; n.y += n.vy;
-        const mx = n.r + 22, my = n.r + 42;
+        const mx = n.r + 14, my = n.r + (narrow ? 24 : 42);
         n.x = Math.max(mx, Math.min(W - mx, n.x));
         n.y = Math.max(my, Math.min(H - my - 4, n.y));
       });
@@ -3969,15 +4051,21 @@ html{scroll-padding-top:78px}
         ctx.fillStyle = col; ctx.fill();
         ctx.restore();
 
-        font(ctx, 12, hover === n ? 700 : 500);
-        ctx.fillStyle = active ? '#dff8f3' : 'rgba(223,248,243,.55)';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-        ctx.fillText(n.label, n.x, n.y + n.r + 6);
+        font(ctx, narrow ? 9.5 : 12, hover === n ? 700 : 500);
+        ctx.fillStyle = active ? '#eafffb' : 'rgba(234,255,251,.72)';
+        ctx.textAlign = 'center';
+        if (narrow) {
+          ctx.textBaseline = 'middle';
+          ctx.fillText(n.short, n.x, n.y + 1);
+        } else {
+          ctx.textBaseline = 'top';
+          ctx.fillText(n.label, n.x, n.y + n.r + 6);
+        }
       });
 
       if (hover) {
         const n = hover;
-        font(ctx, 11, 700);
+        font(ctx, narrow ? 9.5 : 11, 700);
         const text = n.label + ' →';
         const tw = ctx.measureText(text).width + 18;
         const tx = Math.min(W - tw - 8, Math.max(8, n.x - tw / 2));
@@ -4150,6 +4238,10 @@ html{scroll-padding-top:78px}
       var all = document.querySelectorAll('#nav a');
       for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
       link.classList.add('active');
+      var nav = document.getElementById('nav');
+      if (nav && window.innerWidth < 980 && nav.scrollWidth > nav.clientWidth) {
+        nav.scrollTo({ left: link.offsetLeft - nav.clientWidth / 2 + link.offsetWidth / 2, behavior: 'smooth' });
+      }
     }
     return true;
   }
