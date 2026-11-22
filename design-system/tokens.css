@@ -1,0 +1,217 @@
+/* ==========================================================================
+   学习站设计系统 · Design Tokens
+   --------------------------------------------------------------------------
+   统一五个站点的颜色、字体、尺寸与层级。网站只通过 data-brand 改变主色，
+   结构、字号、间距、圆角、阴影完全一致。
+
+   用法：
+     <html lang="zh-CN" data-theme="light" data-brand="circuit">
+   data-brand 取值：micro | calculus | linear | circuit | hub
+   ========================================================================== */
+
+:root {
+  /* ---------- 纸与墨 ---------- */
+  --paper: #f7f3ea;
+  --paper-2: #f1ebdd;
+  --paper-3: #e9e1d0;
+  --card: #fffdf8;
+  --card-2: #fbf7ee;
+
+  --ink: #15171c;
+  --ink-2: #3b414d;
+  --ink-3: #6c727f;
+  --ink-4: #9aa0ab;
+
+  --line: #e2dac8;
+  --line-2: #ece6d6;
+  --line-3: #f3eee2;
+
+  /* ---------- 语义色 ---------- */
+  --teal: #0e766e;
+  --teal-soft: #e2f2ee;
+  --amber: #b45309;
+  --amber-soft: #fbefd9;
+  --blue: #2563eb;
+  --blue-soft: #e8effc;
+  --purple: #6b3fa0;
+  --purple-soft: #efe8f8;
+  --red: #b3241c;
+  --red-soft: #fbe8e5;
+  --green: #1d6b4f;
+  --green-soft: #e5f2eb;
+
+  /* 角色色：同一角色全书同色，不许每张图重新配色 */
+  --c-input: var(--blue);
+  --c-output: var(--amber);
+  --c-store: var(--purple);
+  --c-warn: var(--red);
+  --c-good: var(--green);
+
+  /* ---------- 主色（由 data-brand 覆盖） ---------- */
+  --brand: #0e766e;
+  --brand-ink: #0b5d57;
+  --brand-soft: #e2f2ee;
+  --brand-line: #b8dfd6;
+
+  /* ---------- 字体 ---------- */
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI",
+          "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Songti SC",
+           "Source Han Serif SC", "Noto Serif SC", "STSong", Georgia, serif;
+  --mono: "Cascadia Mono", "SFMono-Regular", "JetBrains Mono", Consolas,
+          "Liberation Mono", Menlo, monospace;
+  --math: "Cambria Math", "Latin Modern Math", "STIX Two Math", Cambria,
+          "Times New Roman", Georgia, serif;
+
+  /* ---------- 字号阶 ---------- */
+  --fs-xs: 11.5px;
+  --fs-sm: 12.5px;
+  --fs-md: 13.5px;
+  --fs-base: 17px;
+  --fs-lg: 19px;
+  --fs-h3: 19.5px;
+  --fs-h2: clamp(23px, 2.5vw, 29px);
+  --fs-h1: clamp(29px, 3.8vw, 43px);
+  --fs-display: clamp(34px, 5.4vw, 58px);
+
+  /* ---------- 间距 ---------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 22px;
+  --sp-6: 30px;
+  --sp-7: 42px;
+  --sp-8: 58px;
+  --sp-9: 78px;
+
+  /* ---------- 形状 ---------- */
+  --radius-xs: 6px;
+  --radius-sm: 9px;
+  --radius: 13px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+
+  --shadow-1: 0 1px 2px rgba(21, 23, 28, .04);
+  --shadow-2: 0 1px 2px rgba(21, 23, 28, .05), 0 10px 26px -16px rgba(21, 23, 28, .32);
+  --shadow-3: 0 2px 4px rgba(21, 23, 28, .05), 0 26px 50px -28px rgba(21, 23, 28, .40);
+
+  /* ---------- 布局 ---------- */
+  --topbar-h: 60px;
+  --side-w: 292px;
+  --measure: 74ch;      /* 纯文字块的最宽行宽 */
+  --content: 880px;     /* 正文栏最大宽度（含公式、表格、图） */
+  --page-w: 1180px;     /* 工具页 / 图库的最大宽度 */
+
+  /* ---------- 动效 ---------- */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --dur: .18s;
+
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   各站点主色 —— 只改这一个变量，站点立刻有身份
+   ========================================================================== */
+
+/* 微电子电路设计：靛蓝 */
+html[data-brand="micro"] {
+  --brand: #3b46c9;
+  --brand-ink: #2b34a6;
+  --brand-soft: #e8eafb;
+  --brand-line: #c3c8f2;
+}
+
+/* 微积分图谱：砖红 */
+html[data-brand="calculus"] {
+  --brand: #a63d2f;
+  --brand-ink: #862d21;
+  --brand-soft: #f8e8e4;
+  --brand-line: #ebc9c1;
+}
+
+/* 线性代数图解：藤紫 */
+html[data-brand="linear"] {
+  --brand: #6b3fa0;
+  --brand-ink: #552e83;
+  --brand-soft: #efe8f8;
+  --brand-line: #d8c9ec;
+}
+
+/* 线性电路分析：松绿 */
+html[data-brand="circuit"] {
+  --brand: #0e766e;
+  --brand-ink: #0b5d57;
+  --brand-soft: #e2f2ee;
+  --brand-line: #b8dfd6;
+}
+
+/* 总览：墨黑 + 琥珀 */
+html[data-brand="hub"] {
+  --brand: #b45309;
+  --brand-ink: #8c3f06;
+  --brand-soft: #fbefd9;
+  --brand-line: #ecd3a8;
+}
+
+/* ==========================================================================
+   深色模式
+   ========================================================================== */
+
+html[data-theme="dark"] {
+  --paper: #14161b;
+  --paper-2: #1b1e25;
+  --paper-3: #23272f;
+  --card: #1a1d24;
+  --card-2: #1e222a;
+
+  --ink: #e9e6dd;
+  --ink-2: #c4c2ba;
+  --ink-3: #94928c;
+  --ink-4: #6e6d69;
+
+  --line: #2e323b;
+  --line-2: #262a32;
+  --line-3: #20242b;
+
+  --teal: #6fc9bd;
+  --teal-soft: #16302c;
+  --amber: #e0a45e;
+  --amber-soft: #352714;
+  --blue: #8fb0f5;
+  --blue-soft: #1b2436;
+  --purple: #b79ce4;
+  --purple-soft: #241d33;
+  --red: #e58a80;
+  --red-soft: #33211f;
+  --green: #7ec8a4;
+  --green-soft: #16281f;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, .45), 0 12px 30px -16px rgba(0, 0, 0, .9);
+  --shadow-3: 0 2px 4px rgba(0, 0, 0, .5), 0 28px 56px -30px rgba(0, 0, 0, 1);
+
+  color-scheme: dark;
+}
+
+html[data-theme="dark"][data-brand="micro"] {
+  --brand: #9aa4ff; --brand-ink: #b6beff;
+  --brand-soft: #1e2340; --brand-line: #333a63;
+}
+html[data-theme="dark"][data-brand="calculus"] {
+  --brand: #e0917f; --brand-ink: #eeb2a2;
+  --brand-soft: #33211f; --brand-line: #5a3730;
+}
+html[data-theme="dark"][data-brand="linear"] {
+  --brand: #b79ce4; --brand-ink: #c9b4ee;
+  --brand-soft: #241d33; --brand-line: #413259;
+}
+html[data-theme="dark"][data-brand="circuit"] {
+  --brand: #6fc9bd; --brand-ink: #8bd9cd;
+  --brand-soft: #14302c; --brand-line: #2b544c;
+}
+html[data-theme="dark"][data-brand="hub"] {
+  --brand: #e0a45e; --brand-ink: #edb877;
+  --brand-soft: #33260f; --brand-line: #57401f;
+}
