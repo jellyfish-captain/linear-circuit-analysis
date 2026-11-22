@@ -1,0 +1,542 @@
+/* ==========================================================================
+   线性电路分析 · 站点适配层
+   --------------------------------------------------------------------------
+   全部颜色、字号、间距、圆角都取自 ../design-system/tokens.css。
+   这里只保留本站独有的部件：章节卡片、推导块、领域图、PDF 阅读器、实拍/3D 图。
+   ========================================================================== */
+
+/* ---------- 顶栏之下的整幅布局 ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: var(--side-w) minmax(0, 1fr);
+  align-items: start;
+  max-width: calc(var(--content) + var(--side-w));
+  margin: 0 auto;
+  padding: 0;
+  gap: 0;
+}
+.layout > main { padding-top: var(--sp-5); }
+
+.nav-title { margin: 0 0 var(--sp-2) 9px; }
+
+.nav { list-style: none; margin: 0; padding: 0; }
+.nav li { margin: 0; }
+.nav a {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+  padding: 5px 9px;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.nav a span {
+  flex: 0 0 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.nav a:hover { background: var(--paper-2); color: var(--ink); text-decoration: none; }
+.nav a.active {
+  border-left-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  font-weight: 650;
+}
+.nav a.active span { color: var(--brand); }
+
+/* ---------- 首屏 ---------- */
+
+.hero {
+  max-width: calc(var(--content) + var(--side-w));
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-5) var(--sp-5);
+}
+.hero-inner { max-width: 100%; padding: 0; }
+.hero h1 { font-size: var(--fs-display); line-height: 1.06; margin: 0 0 var(--sp-4); }
+.hero h1 span { color: var(--brand-ink); }
+.hero h1 em { font-style: italic; color: var(--brand-ink); }
+.hero p { max-width: 62ch; font-size: var(--fs-lg); color: var(--ink-2); margin: 0 0 var(--sp-5); }
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+.hero-meta div { flex: none; }
+.hero-meta b {
+  display: block;
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 总览 ---------- */
+
+.overview {
+  max-width: calc(var(--content) + var(--side-w));
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-5) 0;
+}
+.kicker2 {
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+  font-weight: 700;
+}
+.ov-head h2 { font-size: var(--fs-h2); margin: 6px 0 8px; }
+.ov-head p { color: var(--ink-3); margin: 0 0 var(--sp-4); font-size: 14.5px; }
+
+.part-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  justify-content: center;
+  margin: var(--sp-3) 0 0;
+  padding-bottom: var(--sp-5);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.part-legend i {
+  display: inline-block;
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.lg-r { background: #b45309; }
+.lg-c { background: #2563eb; }
+.lg-l { background: #6b3fa0; }
+.lg-v { background: #b3241c; }
+.lg-i { background: #0e766e; }
+.lg-o { background: #1d6b4f; }
+
+.map-list { display: none; flex-wrap: wrap; gap: 8px; margin-top: var(--sp-3); }
+.map-list a {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+@media (max-width: 900px) { .map-list { display: flex; } }
+
+/* ---------- 章节卡片 ---------- */
+
+.chapter {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 3.4vw, 40px);
+  margin-bottom: var(--sp-5);
+  box-shadow: var(--shadow-2);
+}
+.chapter p { color: var(--ink-2); }
+.chapter ul, .chapter ol { color: var(--ink-2); }
+.chapter li::marker { color: var(--brand); }
+
+.chapter-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: var(--sp-3);
+}
+.chapter-num {
+  font-family: var(--serif);
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: .9;
+  font-weight: 700;
+  color: var(--paper-3);
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+.chapter-head h2 { margin: 2px 0 0; font-size: var(--fs-h2); line-height: 1.22; }
+.chapter-head .tag {
+  display: inline-block;
+  margin-top: 7px;
+  font-size: 10.5px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+  font-weight: 700;
+}
+.chapter .lead { margin-bottom: var(--sp-4); }
+
+.split {
+  display: grid;
+  grid-template-columns: 1.02fr .98fr;
+  gap: var(--sp-5);
+  align-items: start;
+  margin-top: var(--sp-4);
+}
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+/* ---------- 深入块 ---------- */
+
+.deep { margin-top: var(--sp-6); padding-top: var(--sp-5); border-top: 1px dashed var(--line); }
+.deep h3 { font-size: 17.5px; margin: 0 0 6px; }
+.deep-grid {
+  display: grid;
+  grid-template-columns: 1.02fr .98fr;
+  gap: var(--sp-5);
+  align-items: start;
+  margin-top: var(--sp-4);
+}
+@media (max-width: 900px) { .deep-grid { grid-template-columns: 1fr; } }
+.deep p { font-size: 14.6px; color: var(--ink-2); }
+.deep table { font-size: 13px; }
+.deep li { font-size: 14px; }
+
+/* ---------- 公式墙与数学卡 ---------- */
+
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+@media (max-width: 900px) { .formula-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .formula-grid { grid-template-columns: 1fr; } }
+
+.formula-card {
+  background: var(--paper-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+  overflow-x: auto;
+}
+.formula-card h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: .01em;
+  color: var(--brand-ink);
+}
+.formula-card p { margin: 6px 0; font-size: 13px; }
+.terms { font-size: 13px; }
+.terms td:last-child { color: var(--ink-3); }
+
+.math-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+  margin: var(--sp-5) 0;
+}
+@media (max-width: 760px) { .math-grid { grid-template-columns: 1fr; } }
+
+.math-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-4) 18px;
+  box-shadow: var(--shadow-1);
+}
+.math-card h4 {
+  margin: 0 0 7px;
+  font-size: 14.5px;
+  font-family: var(--sans);
+  font-weight: 700;
+  color: var(--brand-ink);
+}
+.math-card p { margin: 6px 0; font-size: 14px; color: var(--ink-2); }
+.math-card .eq { font-size: 13.5px; padding: 9px 12px; margin: 11px 0 0; text-align: left; }
+.math-tip { padding: var(--sp-4) 18px; }
+.math-tip p { margin: 7px 0 0; }
+.energy-eq { font-size: 17px; }
+
+/* ---------- 公式块（本站大量使用） ---------- */
+
+.eq {
+  text-align: center;
+  line-height: 2.0;
+}
+.eq br { line-height: 2.1; }
+.deep .eq { font-size: .96em; }
+.math-card .eq, .formula-card .eq { text-align: left; }
+.domain-eq .katex, .formula-card .katex, .terms .katex { white-space: nowrap; }
+
+/* ---------- 图 ---------- */
+
+.figure {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: var(--shadow-1);
+}
+.figure svg { display: block; width: 100%; height: auto; }
+.figure figcaption {
+  font-size: 12px;
+  color: var(--ink-3);
+  text-align: center;
+  margin-top: 6px;
+  line-height: 1.55;
+}
+.figimg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 340px;
+  object-fit: contain;
+  margin: 0 auto;
+  cursor: zoom-in;
+}
+.figpair { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: center; }
+.figpair img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 230px;
+  object-fit: contain;
+  margin: 0 auto;
+  cursor: zoom-in;
+}
+.figure-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+@media (max-width: 760px) { .figure-row { grid-template-columns: 1fr; } }
+
+.photo {
+  margin: var(--sp-5) 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow-1);
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  background: var(--paper-2);
+  cursor: zoom-in;
+}
+.photo figcaption {
+  padding: 9px 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  background: var(--card-2);
+}
+.photo figcaption a { color: var(--brand-ink); }
+.photo-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin: var(--sp-5) 0; }
+.photo-row .photo { margin: 0; }
+.photo-row .photo img { height: 230px; object-fit: cover; }
+@media (max-width: 760px) { .photo-row { grid-template-columns: 1fr; } }
+
+.render3d { position: relative; background: var(--paper-2); }
+.render3d::before {
+  content: "3D";
+  position: absolute;
+  top: 9px; right: 10px;
+  z-index: 2;
+  background: var(--brand);
+  color: #fff;
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.render3d img { background: transparent; }
+
+/* ---------- 领域图 ---------- */
+
+.domain-figure { margin-top: var(--sp-5); }
+.domain-flow { display: flex; align-items: stretch; gap: 8px; margin: var(--sp-3) 0 6px; }
+.domain-card {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 11px 8px;
+  text-align: center;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+.domain-card.dt { border-color: #0e766e; }
+.domain-card.ph { border-color: #b45309; }
+.domain-card.sp { border-color: #6b3fa0; }
+.domain-card.fq { border-color: #2563eb; }
+.domain-kicker { font-size: 12.5px; font-weight: 700; margin-bottom: 5px; }
+.domain-card.dt .domain-kicker { color: #0b5d57; }
+.domain-card.ph .domain-kicker { color: #8a3f06; }
+.domain-card.sp .domain-kicker { color: #5b21b6; }
+.domain-card.fq .domain-kicker { color: #1d4ed8; }
+.domain-eq {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-size: 13px;
+  margin: 0;
+  padding: 6px 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.domain-note { font-size: 10.5px; color: var(--ink-3); margin-top: 5px; line-height: 1.45; }
+.domain-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  color: var(--ink-3);
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+.domain-arrow b { font-size: 19px; color: var(--ink-4); line-height: 1; }
+@media (max-width: 1100px) {
+  .domain-flow { flex-wrap: wrap; justify-content: center; }
+  .domain-card { flex: 1 1 42%; }
+  .domain-arrow { display: none; }
+}
+@media (max-width: 640px) { .domain-card { flex: 1 1 100%; } }
+
+/* ---------- 知识链表格 ---------- */
+
+.chain-table td { padding: 9px 12px; line-height: 2.0; vertical-align: middle; }
+.chain-table .katex { font-size: 1em; }
+@media (max-width: 640px) {
+  .chain-table { display: block; }
+  .chain-table thead { display: none; }
+  .chain-table tbody, .chain-table tr, .chain-table td { display: block; width: 100%; }
+  .chain-table tr { padding: 9px 0; border-bottom: 1px solid var(--line-2); }
+  .chain-table td { border: 0; padding: 2px 0; }
+  .chain-table td:first-child { font-weight: 700; color: var(--brand-ink); }
+}
+
+/* ---------- 类比卡 ---------- */
+
+.card .ico {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  font-size: 20px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.card .ico svg { width: 24px; height: 24px; display: block; }
+.card h4 {
+  margin: 6px 0 4px;
+  font-size: 14.5px;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.card p { margin: 0; font-size: 12.8px; color: var(--ink-3); line-height: 1.55; }
+
+/* ---------- PDF 讲义阅读器 ---------- */
+
+.pdf-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: var(--sp-4) 0;
+}
+.pdf-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color var(--dur), background var(--dur);
+}
+.pdf-card:hover { border-color: var(--brand-line); background: var(--brand-soft); }
+.pdf-card.active { border-color: var(--brand); background: var(--brand-soft); }
+.pdf-no {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--brand-ink);
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: 5px;
+  padding: 1px 5px;
+  margin-top: 2px;
+}
+.pdf-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pdf-name { font-size: 12.5px; font-weight: 700; line-height: 1.35; color: var(--ink); }
+.pdf-meta { font-size: 10.5px; color: var(--ink-3); line-height: 1.4; }
+.pdf-viewer {
+  margin-top: var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper-2);
+}
+.pdf-viewer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 13px;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+}
+.pdf-viewer-head b { min-width: 0; }
+.pdf-viewer-head a { color: var(--brand-ink); font-weight: 700; white-space: nowrap; }
+#pdfFrame { display: block; width: 100%; height: 620px; border: 0; background: #fff; }
+@media (max-width: 900px) { .pdf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .pdf-grid { grid-template-columns: 1fr; }
+  .pdf-viewer-head { flex-wrap: wrap; }
+  #pdfFrame { height: 420px; }
+}
+
+/* ---------- 页脚 ---------- */
+
+.foot { max-width: none; padding: var(--sp-5) 0 var(--sp-6); text-align: center; }
+.foot .credit { font-size: 11.5px; }
+
+/* ---------- 移动端 ---------- */
+
+@media (max-width: 1080px) {
+  .layout { display: block; grid-template-columns: none; }
+  .overview { padding: var(--sp-5) 18px 0; }
+}
+
+@media (max-width: 640px) {
+  .hero { padding: var(--sp-6) 0 var(--sp-4); }
+  .hero-meta { gap: var(--sp-4) var(--sp-5); }
+  .hero-meta b { font-size: 20px; }
+  .chapter { padding: 18px 16px; border-radius: var(--radius); }
+  .chapter-num { font-size: 38px; }
+  .chapter-head h2 { font-size: 20px; }
+  .figimg { max-height: 240px; }
+  .figpair img { max-height: 200px; }
+  .photo img { max-height: 300px; }
+  .eq { font-size: 12.8px; line-height: 1.85; }
+}

@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-brand="circuit" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101418">
+<title>线性电路分析 · 可视化课堂</title>
+<meta name="description" content="用可视化与互动，把《线性电路分析》从水管类比讲到双口网络与变压器。">
+<script src="../design-system/theme.js"></script>
+<link rel="stylesheet" href="../design-system/tokens.css">
+<link rel="stylesheet" href="../design-system/ui.css">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">Linear Circuit Analysis · 可视化课堂</div>
+    <h1>把电路，<br><span>看成会呼吸的系统</span></h1>
+    <p>不用先啃公式。先用四张图把数学直觉补上，再从水管讲到相量、从电容的记性讲到变压器的齿轮——用 18 个可视化小节，把整本《线性电路分析》重新讲一遍。</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#math">从数学直觉开始 →</a>
+      <a class="btn" href="#map">先看知识地图</a>
+    </div>
+    <div class="hero-meta">
+      <div><b>18</b>知识小节</div>
+      <div><b>39</b>幅图示</div>
+      <div><b>19</b>可拖动互动</div>
+    </div>
+  </div>
+</header>
+
+<section class="overview" id="map">
+  <div class="overview-inner">
+    <div class="ov-head">
+      <div class="kicker2">总览 · OVERVIEW</div>
+      <h2>一张图，先看全局</h2>
+      <p>这是一张关系图谱：节点是章节，连线是依赖关系。拖动节点重排，悬停高亮，点击进入章节。</p>
+    </div>
+    <div class="graph-wrap">
+      <canvas id="graphCanvas"></canvas>
+      <div class="graph-hint"><span>拖动节点</span><span>悬停高亮</span><span>点击进入章节</span></div>
+    </div>
+    <div class="ov-foot">
+      <span>17 个节点</span><span>拖动重排</span><span>点击跳转</span>
+    </div>
+  </div>
+  <div class="part-legend">
+    <span><i class="lg-r"></i>电阻</span><span><i class="lg-c"></i>电容</span><span><i class="lg-l"></i>电感</span>
+    <span><i class="lg-v"></i>电压源</span><span><i class="lg-i"></i>电流源</span><span><i class="lg-o"></i>运放</span>
+  </div>
+</section>
+
+<div class="layout">
+  <aside class="sidebar">
+    <p class="nav-title">目录</p>
+    <ul class="nav" id="nav">
+      <li><a href="#map"><span>◉</span>总览</a></li>
+      <li><a href="#math"><span>00</span>数学工具箱</a></li>
+      <li><a href="#intro"><span>01</span>把电想成水</a></li>
+      <li><a href="#quantities"><span>02</span>三个基本量</a></li>
+      <li><a href="#laws"><span>03</span>两条铁律</a></li>
+      <li><a href="#equivalent"><span>04</span>等效与戴维南</a></li>
+      <li><a href="#methods"><span>05</span>节点与网孔</a></li>
+      <li><a href="#active"><span>06</span>受控源与运放</a></li>
+      <li><a href="#storage"><span>07</span>电容与电感</a></li>
+      <li><a href="#firstorder"><span>08</span>一阶电路</a></li>
+      <li><a href="#secondorder"><span>09</span>二阶电路</a></li>
+      <li><a href="#phasor"><span>10</span>相量与正弦</a></li>
+      <li><a href="#power"><span>11</span>交流功率</a></li>
+      <li><a href="#frequency"><span>12</span>频率与滤波</a></li>
+      <li><a href="#laplace"><span>13</span>拉普拉斯</a></li>
+      <li><a href="#fourier"><span>14</span>傅里叶</a></li>
+      <li><a href="#twoport"><span>15</span>双口与变压器</a></li>
+      <li><a href="#three-phase"><span>16</span>三相电路</a></li>
+      <li><a href="#thread"><span>★</span>知识脉络</a></li>
+      <li><a href="#formula"><span>17</span>公式墙</a></li>
+      <li><a href="#pdf"><span>18</span>配套教材</a></li>
+    </ul>
+  </aside>
+
+  <main>
+
+    <!-- 01 -->
+    <section class="chapter" id="math">
+  <div class="chapter-head">
+    <div class="chapter-num">00</div>
+    <div><h2>数学工具箱：公式背后的六件事</h2><div class="tag">先补直觉，再碰公式</div></div>
+  </div>
+  <p class="lead">电路里的公式，其实只用到几样数学：直线、斜率、面积、指数、复数、方程。先把它们变成“看得见的图”，公式就不再是符号堆。</p>
+
+  <div class="math-grid">
+    <div class="math-card">
+      <h4>① 直线：y = kx + b</h4>
+      <p>k 是斜率，意思是“横着走一格，竖着升多少”。b 是截距，意思是“起点在哪”。</p>
+      <p>电阻的电压—电流关系就是一条过原点的直线：斜率就是电阻。斜率越大，同样的电流需要越高电压。</p>
+      <div class="eq">v = R i</div>
+    </div>
+
+    <div class="math-card">
+      <h4>② 导数：曲线在某点的“陡不陡”</h4>
+      <p>导数就是切线斜率，也就是“变化率”。电压变化得越快，电容电流越大；电流变化得越快，电感电压越大。</p>
+      <div class="eq">i = C · dv/dt<br>v = L · di/dt</div>
+    </div>
+
+    <div class="math-card">
+      <h4>③ 积分：把无数小条“加起来”</h4>
+      <p>积分就是曲线下的面积。电流一点点流，电荷就一点点攒；功率一点点给，能量就一点点攒。</p>
+      <div class="eq">q(t) = ∫ i dt<br>w(t) = ∫ p dt</div>
+    </div>
+
+    <div class="math-card">
+      <h4>④ 指数：变化率和“自己”成正比</h4>
+      <p>e<sup>at</sup> 求导还是 e<sup>at</sup> 乘 a。a 为负就衰减，a 为正就发散。RC 充电、RL 电流、一阶响应，全是这条曲线。</p>
+      <div class="eq">d(e<sup>at</sup>)/dt = a e<sup>at</sup><br>v = V(1 − e<sup>−t/τ</sup>)</div>
+    </div>
+
+    <div class="math-card">
+      <h4>⑤ 复数：长度 + 角度</h4>
+      <p>j² = −1。一个复数可以看成平面上的箭头：长度是幅度，角度是相位。乘 j 就是逆时针转 90°。相量就是“会转的复数”。</p>
+      <div class="eq">z = x + jy = |z|∠θ</div>
+    </div>
+
+    <div class="math-card">
+      <h4>⑥ 微分方程：把“变化率”写成方程</h4>
+      <p>一阶方程 y′ + ay = x 的解里一定带 e<sup>−at</sup>。a 的符号决定衰减还是发散；二阶方程则多出一对“阻尼 + 振荡”。</p>
+      <div class="eq">y(t) = y<sub>∞</sub> + (y<sub>0</sub> − y<sub>∞</sub>)e<sup>−at</sup></div>
+    </div>
+  </div>
+
+  <div class="deep">
+    <h3>把“斜率”和“面积”画出来</h3>
+    <div class="deep-grid">
+      <figure class="figure">
+        <img class="figimg" src="assets/fig/plot_derivative.png" alt="导数就是切线斜率" loading="lazy">
+        <figcaption>导数 = 切线斜率 = 瞬时变化率</figcaption>
+      </figure>
+      <figure class="figure">
+        <img class="figimg" src="assets/fig/plot_integral.png" alt="积分就是曲线下的面积" loading="lazy">
+        <figcaption>积分 = 面积 = 累积量</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="deep">
+    <h3>把“旋转”和“衰减”画出来</h3>
+    <div class="deep-grid">
+      <figure class="figure">
+        <img class="figimg" src="assets/fig/plot_complex.png" alt="复数就是平面上的箭头" loading="lazy">
+        <figcaption>复数 = 长度 + 角度；相量 = 会旋转的复数</figcaption>
+      </figure>
+      <figure class="figure">
+        <img class="figimg" src="assets/fig/plot_exp.png" alt="指数衰减与时间常数" loading="lazy">
+        <figcaption>指数衰减：变化率与剩余量成正比</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="deep">
+    <h3>还有两件小工具：矩阵与对数</h3>
+    <div class="deep-grid">
+      <div>
+        <p><b>矩阵</b>只是“把联立方程排整齐”。节点法、网孔法列到最后，都是 Ax = b。行列式不为零，才有唯一解；Cramer 法则就是“用行列式相除”解出每个未知量。</p>
+        <div class="eq">A x = b<br>x<sub>i</sub> = det(A<sub>i</sub>) / det(A)</div>
+        <p><b>对数</b>把乘法变成加法：log(ab) = log a + log b。Bode 图正是利用这一点——串联环节的增益相乘，在对数坐标里变成斜率相加。</p>
+        <div class="eq">A<sub>dB</sub> = 20 log<sub>10</sub>|H|<br>log(ab) = log a + log b</div>
+      </div>
+      <div class="math-tip">
+        <b>看到公式先问三句：</b>
+        <p>① 它说的是“直线”还是“曲线”？<br>
+        ② 它是在“求变化率”还是在“求累积”？<br>
+        ③ 它是“时域”的话，能不能换到频域或 s 域，把微积分变成代数？</p>
+        <p>这三问能解决电路里八成公式的“来历”问题。</p>
+      </div>
+    </div>
+  </div>
+
+      <div class="memo"><b>一句话记住</b><span>公式只是五块积木：直线、斜率、面积、指数、复数。</span></div></section>
+
+
+    <section class="chapter" id="intro">
+      <div class="chapter-head">
+        <div class="chapter-num">01</div>
+        <div><h2>先把电想成水</h2><div class="tag">建立直觉 · 不写公式</div></div>
+      </div>
+      <p class="lead">电路里的东西看不见摸不着。最好的入门办法，是先找一套“水管”来类比；等直觉长出来，再换回电的语言。</p>
+      <p>电压像水位差，电流像水流量，电阻像细管子，电容像水罐，电感像水轮，电源像水泵，地像海平面。电路图就是一张水管图：线是管子，元件是管子上的器件，节点是接头。</p>
+
+      <div class="cards">
+        <div class="card"><div class="ico"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#0e766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 23h24M4 27h24"/><path d="M6 23l5-13 4 8 3-5 4 10"/><path d="M16 5v4M14 7h4"/></svg></div><h4>电压 = 水位差</h4><p>两点之间的“高度差”。高度差越大，推动水流的力量越大。</p></div>
+        <div class="card"><div class="ico"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#0e766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-5 6 5 9 0s6 5 9 0 5 5 8 0"/><path d="M3 22c3-5 6 5 9 0s6 5 9 0 5 5 8 0"/><path d="M21 4l6 3-6 3"/></svg></div><h4>电流 = 流量</h4><p>每秒钟流过多少水。它“穿过”导体，不是“跨在”两点上。</p></div>
+        <div class="card"><div class="ico"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#0e766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h7l2-4 3 8 3-8 3 8 2-4h5"/><path d="M3 23h26"/></svg></div><h4>电阻 = 细管</h4><p>管子越细，同样的水压下水流量越小；电阻越大，电流越小。</p></div>
+        <div class="card"><div class="ico"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#0e766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="10" width="14" height="16" rx="3"/><path d="M9 17h14M13 6v4M19 6v4"/></svg></div><h4>电容 = 水罐</h4><p>能存水，水位不能瞬间改变；对应电容电压不能跳变。</p></div>
+        <div class="card"><div class="ico"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#0e766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="9"/><path d="M16 7v18M7 16h18M10 10l12 12M22 10L10 22"/></svg></div><h4>电感 = 飞轮</h4><p>有惯性，水流不能瞬间改变；对应电感电流不能跳变。</p></div>
+        <div class="card"><div class="ico"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#0e766e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c4-3 8 3 12 0s8 3 12 0"/><path d="M3 25c4-3 8 3 12 0s8 3 12 0"/><path d="M8 9v10M16 5v14M24 9v10"/></svg></div><h4>地 = 海平面</h4><p>只是选定的零高度，不是“把电路埋进土里”的安全接地。</p></div>
+      </div>
+
+      <p style="margin-top:18px">图可以拉长、弯曲、重画，只要“谁和谁相接”不变，电路的行为就不变。这个“只认连接关系”的性质，叫<strong>拓扑</strong>。</p>
+
+      <div class="pitfall"><b>先记住：</b>电压表要跨着量，电流表要串着量；表笔或表夹反接，读数变号，这不是故障，只是实际方向和你规定的方向相反。</div>
+    
+<div class="deep">
+  <h3>再深入一点：电压和电流到底是怎么“定义”的</h3>
+  <div class="deep-grid">
+    <div>
+      <p>本书不先假设“电压是什么”，而是规定一套操作：用电压表跨接两点，红笔接“＋”、黑笔接另一点，读数由数值、单位、符号三部分组成。换一下表笔，符号就反过来——这就是参考方向。</p>
+      <p>双下标 <b>v<sub>ab</sub></b> 里，第一个字母带“＋”，第二个带“－”，所以交换下标必须变号。节点电压则是把黑笔固定在参考点，红笔逐点去量；换一个参考点，所有节点电压整体平移，但两点之间的电压差不变。</p>
+      <p>电荷和磁链是“累积量”：电流积成电荷，电压积成磁链。它们都带初始值，这正是后面“初始条件”的来源。</p>
+      <div class="eq">v<sub>ab</sub> = − v<sub>ba</sub><br>q(t) = q<sub>0</sub> + ∫<sub>0</sub><sup>t</sup> i dτ<br>λ(t) = λ<sub>0</sub> + ∫<sub>0</sub><sup>t</sup> v dτ</div>
+    </div>
+    <figure class="figure">
+      <img class="figimg" src="assets/fig/meter.png" alt="电压表并联、电流表串联的测量电路" loading="lazy">
+      <figcaption>电压“跨着量”，电流“串着量”；表笔反接只改变符号</figcaption>
+    </figure>
+  </div>
+</div>
+    
+      <div class="app">
+  <div class="ico">🔌</div>
+  <div><h4>现实里：手机充电器</h4>
+  <p>充电器把墙上的 220 V 交流变成 5 V 直流，靠的就是“电压变换 + 整流 + 滤波”。你摸到的“5 V”是两点之间的高度差，不是“电子有多快”。</p></div>
+</div>
+    
+      
+<figure class="photo"><img src="assets/photos/pcb.jpg" alt="一块真实电路板：元件、铜箔与过孔把电路变成一张网络。" loading="lazy"><figcaption>一块真实电路板：元件、铜箔与过孔把电路变成一张网络。 <a href="https://commons.wikimedia.org/wiki/File:Printed_Circuit_Board_9990.jpg" target="_blank" rel="noopener">图源：Ashley Pomeroy / CC BY 4.0</a></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>电压是高度差，电流是流量，地只是海平面。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：测量与单位</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：端口与功率</span></div>
+    </section>
+
+    <!-- 02 -->
+    <section class="chapter" id="quantities">
+      <div class="chapter-head">
+        <div class="chapter-num">02</div>
+        <div><h2>三个基本量：电压、电流、时间</h2><div class="tag">测量 · 参考方向 · 功率</div></div>
+      </div>
+      <p class="lead">电路里所有的量，最后都能追到三个“可以直接测量”的基本量。其余都是它们乘出来、积出来的。</p>
+      <ul>
+        <li><b>电压</b>：两点之间的高度差。双下标 <b>v<sub>ab</sub></b> 表示 a 比 b 高，交换下标就变号。</li>
+        <li><b>电流</b>：穿过导体的流量。箭头是人为规定的正方向，反接读数变号。</li>
+        <li><b>时间</b>：一切“变化快慢”的标尺。电容、电感之所以有“记忆”，就是因为它们对时间累积。</li>
+      </ul>
+      <p>选一个节点当 0 V（参考点），其他节点相对它的电压就是<b>节点电压</b>。换一个参考点，所有节点电压整体平移，但任意两点之间的电压差不变。</p>
+
+      <div class="example"><b>小账本：</b>12 V 电池接一个 4 Ω 电阻。电流是 12 ÷ 4 = 3 A；电阻吸收 12 × 3 = 36 W；电池发出 36 W。能量守恒，账必须对得上。</div>
+
+      <div class="split">
+        <div>
+          <h3 style="margin-top:0">功率：元件是在“吃”还是在“吐”</h3>
+          <p>按关联方向（电流从电压的“＋”端流入）算，功率等于电压乘电流。结果是正，元件在吸收；结果是负，元件在发出。</p>
+          <p>能量就是功率随时间的累积。只吸收、不发出的叫无源元件；能够对外供能的叫有源元件。</p>
+        </div>
+        <div class="figure">
+          <img class="figimg" src="assets/fig/battery.png" alt="电池与电阻的功率示例" loading="lazy">
+          <figcaption>同一股水流：电池把水抽上去，电阻把水放下来</figcaption>
+        </div>
+      </div>
+
+      <div class="pitfall"><b>别踩坑：</b>把“地”当成安全接地；把负读数当成元件坏了；忘记参考方向，导致功率符号全反。</div>
+    
+<div class="deep">
+  <h3>再深入一点：功率的四种符号组合</h3>
+  <div class="deep-grid">
+    <div>
+      <p>在关联方向下 <b>p = vi</b>。电压、电流各自可正可负，于是有四种组合；真正决定“吸收还是发出”的，只是乘积的符号，而不是电压或电流单独的正负。</p>
+      <table>
+        <tr><th>v</th><th>i</th><th>p = vi</th><th>含义</th></tr>
+        <tr><td>＋</td><td>＋</td><td>＋</td><td>吸收</td></tr>
+        <tr><td>＋</td><td>－</td><td>－</td><td>发出</td></tr>
+        <tr><td>－</td><td>＋</td><td>－</td><td>发出</td></tr>
+        <tr><td>－</td><td>－</td><td>＋</td><td>吸收</td></tr>
+      </table>
+      <p>无源元件要求对一切时刻都有 <b>w(t) ≥ 0</b>；有源元件只要求“能找到某一时刻 w &lt; 0”，也就是它有能力净输出能量。电池放电时在发出，接上充电器时在吸收，但它仍然是有源元件。</p>
+      <div class="eq">p(t) = v(t) i(t)<br>w(t) = ∫<sub>−∞</sub><sup>t</sup> p dτ = w<sub>0</sub> + ∫<sub>0</sub><sup>t</sup> p dτ</div>
+    </div>
+    <div class="widget">
+  <h3>互动 · 二端元件的功率符号</h3>
+  <p class="hint">点按钮翻转电压极性或电流方向。看 p = vi 什么时候是吸收，什么时候是发出。</p>
+  <canvas id="refCanvas" style="aspect-ratio:2/1.05"></canvas>
+  <div class="controls">
+    <button class="btn" id="refVBtn" type="button">翻转电压极性</button>
+    <button class="btn" id="refIBtn" type="button">翻转电流方向</button>
+  </div>
+  <div class="readout">
+    <span class="chip">v <b id="refVOut">+6 V</b></span>
+    <span class="chip">i <b id="refIOut">+2 A</b></span>
+    <span class="chip">p <b id="refPOut">+12 W</b></span>
+    <span class="chip" id="refState">吸收</span>
+  </div>
+</div>
+  </div>
+</div>
+    
+      <div class="app">
+  <div class="ico">💡</div>
+  <div><h4>现实里：电费单</h4>
+  <p>电费按“度”算，1 度 = 1 kWh = 1000 W 用 1 小时。功率乘时间就是能量；所以 100 W 的灯亮 10 小时，和 1000 W 的空调开 1 小时，电费一样。</p></div>
+</div>
+    
+      
+<figure class="photo"><img src="assets/photos/charger.jpg" alt="USB 充电头：把交流 220 V 变成直流 5 V，内部同样离不开变压器与滤波电容。" loading="lazy"><figcaption>USB 充电头：把交流 220 V 变成直流 5 V，内部同样离不开变压器与滤波电容。 <a href="https://commons.wikimedia.org/wiki/File:USB_power_adapter_for_Apple_iPod,_Model_A1205,_by_Foxlink_Technology_Ltd-1048.jpg" target="_blank" rel="noopener">图源：Raimond Spekking / CC BY-SA 4.0</a></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>功率看乘积的符号，能量看时间的累积。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：参考方向</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：电阻与独立源</span></div>
+    </section>
+
+    <!-- 03 -->
+    <section class="chapter" id="laws">
+      <div class="chapter-head">
+        <div class="chapter-num">03</div>
+        <div><h2>两条铁律：KCL 与 KVL</h2><div class="tag">连接强加的约束</div></div>
+      </div>
+      <p class="lead">元件有元件自己的脾气（电压电流关系），连接方式又强加了两条铁律。两者合起来，电路就“可解”了。</p>
+
+      <div class="split">
+        <div class="widget">
+  <h3>互动 · KCL 节点</h3>
+  <p class="hint">两条支路电流可调，第三条自动补齐。看节点从不“积水”。</p>
+  <canvas id="kclNodeCanvas" style="aspect-ratio:1.35/1"></canvas>
+  <div class="controls">
+    <div class="control"><label for="kn1">i₁</label><input id="kn1" type="range" min="-3" max="3" step="0.1" value="2"><output id="kn1Out">2.0 A</output></div>
+    <div class="control"><label for="kn2">i₂</label><input id="kn2" type="range" min="-3" max="3" step="0.1" value="-1"><output id="kn2Out">−1.0 A</output></div>
+  </div>
+  <div class="readout">
+    <span class="chip">i₃ <b id="kn3Out">−1.0 A</b></span>
+    <span class="chip">Σi <b>0 A</b></span>
+  </div>
+</div>
+        <div class="widget">
+  <h3>互动 · KVL 绕行</h3>
+  <p class="hint">探针沿回路走一圈，路过高亮元件并累加电压；回到起点总和为零。</p>
+  <canvas id="kvlCanvas" style="aspect-ratio:1.35/1"></canvas>
+  <div class="controls"><button class="btn" id="kvlBtn" type="button">开始绕行</button></div>
+  <div class="readout">
+    <span class="chip">ΣV <b id="kvlSum">0.0 V</b></span>
+    <span class="chip" id="kvlState">等待出发</span>
+  </div>
+</div>
+      </div>
+
+      <p style="margin-top:16px"><b>KCL</b> 说的是电荷不会在节点上堆积；对任意画一个包围面也同样成立。<b>KVL</b> 说的是绕任意闭合回路走一圈，电压上升的总和等于下降的总和；由此还能得到“两点电压与路径无关”。</p>
+      <p>为什么这两条就够？因为未知量是每条支路的电压和电流，而元件关系给一半方程，KCL 和 KVL 给另一半。N 个节点只有 N−1 条独立 KCL，B 条支路只有 B−N+1 条独立 KVL。</p>
+
+      <div class="example"><b>试一试：</b>一个节点三条支路，两条分别流入 2 A、1 A，第三条一定流出 3 A。换成“包围面”，结论一样。</div>
+
+      <div class="pitfall"><b>别踩坑：</b>先画方向再列式；符号错一次，后面全错。另外，这套理论假设“尺寸无关、磁通不变”，频率极高或电路极大时会失效。</div>
+    
+<div class="deep">
+  <h3>再深入一点：KCL 的“包围面”与方程的数目</h3>
+  <div class="deep-grid">
+    <div>
+      <p>KCL 不只对一个节点成立，对任意画出的封闭面也成立：穿进这个面的电流总和，等于穿出它的电流总和。这个面可以包住好几个节点，甚至包住半个电路。</p>
+      <p>KVL 也有“路径形式”：从同一点出发、沿两条不同路径走到另一点，两条路径上的电压升之和相等。由此得到“两点电压与路径无关”，绕回路一周则升降相抵。</p>
+      <p>方程够不够？N 个节点只有 N−1 条独立 KCL；B 条支路只有 B−N+1 条独立 KVL。再加上每条支路自己的元件关系，正好凑齐 2B 个方程、2B 个未知量。</p>
+      <div class="eq">Σ i<sub>出</sub> = 0<br>Σ v<sub>降</sub> = 0<br>N−1 条 KCL<br>B−N+1 条 KVL</div>
+    </div>
+    <div class="widget">
+  <h3>互动 · KCL 包围面</h3>
+  <p class="hint">拖动三条支路电流，第四条自动补齐。无论包围面画多大，流入总等于流出。</p>
+  <canvas id="kclCanvas" style="aspect-ratio:2/1.05"></canvas>
+  <div class="controls">
+    <div class="control"><label for="kcl1">i₁</label><input id="kcl1" type="range" min="-3" max="3" step="0.1" value="2"><output id="kcl1Out">2.0 A</output></div>
+    <div class="control"><label for="kcl2">i₂</label><input id="kcl2" type="range" min="-3" max="3" step="0.1" value="-1"><output id="kcl2Out">−1.0 A</output></div>
+    <div class="control"><label for="kcl3">i₃</label><input id="kcl3" type="range" min="-3" max="3" step="0.1" value="0.5"><output id="kcl3Out">0.5 A</output></div>
+  </div>
+  <div class="readout">
+    <span class="chip">i₄ <b id="kcl4Out">−1.5 A</b></span>
+    <span class="chip">Σi <b>0 A</b></span>
+  </div>
+</div>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：四条公理与适用边界</h3>
+  <p>整本书的推导，最后都落在四条不加证明的假设上：</p>
+  <ul>
+    <li><b>只通过端子打交道</b>：元件之间除了端子电压、电流，没有别的“隔空”影响。</li>
+    <li><b>尺寸与方向无关</b>：元件多大、怎么摆，都不影响行为。</li>
+    <li><b>KCL</b>：电荷不会在节点上堆积。</li>
+    <li><b>KVL</b>：回路里没有随时间变化的磁通。</li>
+  </ul>
+  <p>这四条在低频、小尺寸下非常好用；频率高到波长与电路尺寸可比，或者电路大到一个城市那么大，就必须换成“分布参数/传输线”的语言。公理 3 也意味着这套理论不处理静电积累——那是另一门课的事。</p>
+</div>
+    
+      <div class="app">
+  <div class="ico">🏠</div>
+  <div><h4>现实里：家里的插座</h4>
+  <p>墙上的插座是并联的：每个电器都拿到 220 V，互不影响。开关和灯是串联的：开关断开，电流无路可走。配电箱里的各路电流，最后都要满足 KCL。</p></div>
+</div>
+    
+      <div class="memo"><b>一句话记住</b><span>路口不积水（KCL），绕山一圈回原点（KVL）。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：端口 v-i</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：等效与方程</span></div>
+    </section>
+
+    <!-- 04 -->
+    <section class="chapter" id="equivalent">
+      <div class="chapter-head">
+        <div class="chapter-num">04</div>
+        <div><h2>等效与戴维南：把黑箱压成一个电池</h2><div class="tag">化繁为简的核心手艺</div></div>
+      </div>
+      <p class="lead">两个子电路，只要端口上的电压—电流关系完全一样，对外就可以互换。等效只保证“对外一样”，内部可以完全不同。</p>
+      <ul>
+        <li><b>串联</b>：一条路走到底，电流相同，电压按电阻大小分。</li>
+        <li><b>并联</b>：接在同一对节点上，电压相同，电流按电导（电阻的倒数）分。</li>
+        <li><b>电源变换</b>：电压源串电阻，可以换装成电流源并同一个电阻，反过来也行。</li>
+        <li><b>叠加</b>：每个独立源单独开工，其他源“下班”（电压源短路、电流源开路），结果相加。</li>
+      </ul>
+      <p><b>戴维南定理</b>说：任何线性二端网络，对外都能压成“一个电压源串一个电阻”。电压源是端口开路时量到的电压，电阻是内部独立源全部下班后从端口看进去的电阻。内部有受控源时，不能简单下班，要外加一个测试源去“问”。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 最大功率</h3>
+          <p class="hint">固定黑箱：开路电压 12 V，内阻 4 Ω。拖动负载，看它拿到多少功率。</p>
+          <canvas id="thevCanvas" style="aspect-ratio:2/1"></canvas>
+          <div class="controls">
+            <div class="control"><label for="rl">负载 R<sub>L</sub></label><input id="rl" type="range" min="0.5" max="20" step="0.1" value="10"><output id="rlOut">10 Ω</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">电流 <b id="thevI">—</b></span>
+            <span class="chip">负载电压 <b id="thevV">—</b></span>
+            <span class="chip">负载功率 <b id="thevP">—</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">为什么内阻等于负载时功率最大？</h3>
+          <p>负载太小，电压几乎全落在内阻上；负载太大，电流又太小。两头都不讨好，中间有一个“甜点”。</p>
+          <p>这个甜点就是负载等于内阻。但此时内阻上也消耗同样多的功率，效率只有一半——“最大功率”不等于“最高效率”。</p>
+          <div class="eq">P<sub>L</sub> = V<sub>oc</sub>² · R<sub>L</sub> / (R<sub>eq</sub> + R<sub>L</sub>)²</div>
+          <p class="note">拖动左边的滑块，曲线上的圆点会跟着走。</p>
+        </div>
+      </div>
+
+      <div class="example"><b>分压器的“加载效应”：</b>12 V 经 6 kΩ 与 3 kΩ 分压，空载输出 4 V；再接一个 3 kΩ 负载，输出掉到 2.4 V。负载一挂上，原来的分压比就变了。</div>
+
+      <div class="pitfall"><b>别踩坑：</b>用等效电路去算原电路内部的功率——等效只对外成立；求戴维南电阻时把受控源也“下班”了——受控源必须保留；用叠加算功率——功率不能叠加。</div>
+    
+<div class="deep">
+  <h3>再深入一点：电源变换、戴维南与诺顿是一家人</h3>
+  <div class="deep-grid">
+    <div>
+      <p>一个电压源串电阻，可以换装成一个电流源并同一个电阻，条件是 <b>v<sub>s</sub> = R i<sub>s</sub></b>，并且电流源的箭头要指向电压源的“＋”端。反过来也成立。</p>
+      <p>戴维南把任意线性二端网络压成“电压源串电阻”：<b>v = v<sub>oc</sub> + R<sub>eq</sub> i</b>。诺顿则压成“电流源并电阻”：<b>i = v/R<sub>eq</sub> − i<sub>sc</sub></b>，其中 i<sub>sc</sub> = v<sub>oc</sub>/R<sub>eq</sub>。求 R<sub>eq</sub> 时独立源置零，但受控源必须保留；有受控源时用外加测试源去“问”。</p>
+      <p>负载等于内阻时功率最大：P<sub>max</sub> = v<sub>oc</sub>²/(4R<sub>eq</sub>)，但效率只有一半。置换定理、电源搬移，都是“保持端子关系不变”的拓扑手术。</p>
+      <div class="eq">v<sub>s</sub> = R i<sub>s</sub><br>v = v<sub>oc</sub> + R<sub>eq</sub>i<br>i<sub>sc</sub> = v<sub>oc</sub>/R<sub>eq</sub></div>
+    </div>
+    <figure class="figure">
+      <div class="figpair"><img src="assets/fig/src_v.png" alt="电压源串联电阻" loading="lazy"><img src="assets/fig/src_i.png" alt="电流源并联电阻" loading="lazy"></div>
+      <figcaption>两种电源模型可以互换；任何线性黑箱都能压成戴维南或诺顿</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>再补一张图：串联、并联与分压分流</h3>
+  <div class="deep-grid">
+    <div>
+      <p>串联是“一条路走到底”：两个电阻流过同一电流，电压按阻值正比分配。阻值越大，分到的电压越多；总电阻直接相加。</p>
+      <p>并联是“接在同一对节点上”：两个电阻承受同一电压，电流按电导正比分配。阻值越小，分到的电流越多；总电导直接相加。</p>
+      <p>分压、分流是电路分析里最常用的两个“心算工具”。但要记住：分压公式只在串联、且没有其他支路“分流”时成立；一旦接上负载，原来的分压比就被拉偏了。</p>
+      <div class="eq">R<sub>eq</sub> = R₁ + R₂<br>v₂ = R₂/(R₁+R₂) · v<br>G<sub>eq</sub> = G₁ + G₂<br>i₁ = R₂/(R₁+R₂) · i</div>
+    </div>
+    <figure class="figure">
+      <div class="figpair"><img src="assets/fig/series.png" alt="串联分压电路" loading="lazy"><img src="assets/fig/parallel.png" alt="并联分流电路" loading="lazy"></div>
+      <figcaption>串联分压、并联分流：一个看“同一电流”，一个看“同一电压”</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：叠加、置换与电源搬移</h3>
+  <ul>
+    <li><b>叠加</b>：每个独立源单独作用，其余电压源短路、电流源开路；受控源不能“下班”。叠加只对电压、电流成立，功率不行，因为功率是平方关系。</li>
+    <li><b>置换定理</b>：已知某条支路的电压，就可以把它换成一个同值电压源；已知电流，就换成同值电流源。前提是电路有唯一解。</li>
+    <li><b>电源搬移</b>：电压源可以沿节点“搬家”，电流源可以换到同一对节点之间的另一条路径上，只要搬完之后各端子的电压电流关系不变。</li>
+  </ul>
+  <p>这三件事的共同点：都在“保持端口关系不变”的前提下做拓扑手术。做之前先问一句——我改的是外部关系，还是内部结构？</p>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · 分压公式从哪来</h4>
+  <div class="step"><b>①</b><span>对串联回路写 KVL：电源电压等于两个电阻电压之和。</span></div>
+  <div class="eq">v = v₁ + v₂</div>
+  <div class="step"><b>②</b><span>对每个电阻用欧姆定律，注意它们流过<b>同一个电流</b> i。</span></div>
+  <div class="eq">v₁ = R₁i　　v₂ = R₂i</div>
+  <div class="step"><b>③</b><span>代回 KVL，解出电流。</span></div>
+  <div class="eq">v = (R₁ + R₂)i　⇒　i = v / (R₁ + R₂)</div>
+  <div class="step"><b>④</b><span>把电流代回 v₂，就得到分压公式。</span></div>
+  <div class="eq">v₂ = R₂i = <b>R₂/(R₁ + R₂) · v</b></div>
+  <p class="deriv-end">所以“分压”不是新定律，只是 KVL + 欧姆定律 + “同一电流”三件事合起来的结果。</p>
+</div>
+<div class="deriv">
+  <h4>推导 · 戴维南为什么总能压成“电池 + 电阻”</h4>
+  <div class="step"><b>①</b><span>线性电路里，任一支路的电压、电流都是各独立源的线性组合。</span></div>
+  <div class="step"><b>②</b><span>把端口电流 i 也看成一个“激励”，它对端口电压的贡献一定正比于 i。</span></div>
+  <div class="eq">v = (内部源单独作用时的电压) + (i 单独作用时的电压)</div>
+  <div class="step"><b>③</b><span>第一项就是端口开路（i = 0）时的电压 v<sub>oc</sub>；第二项是 i 乘一个由电阻网络决定的系数 R<sub>eq</sub>。</span></div>
+  <div class="eq">v = v<sub>oc</sub> + R<sub>eq</sub> i</div>
+  <p class="deriv-end">这就是戴维南定理：不是“近似”，而是线性叠加的必然结果。诺顿只是把同一式子两边除以 R<sub>eq</sub>。</p>
+</div>
+<div class="app">
+  <div class="ico">🎚️</div>
+  <div><h4>现实里：音量电位器与传感器</h4>
+  <p>音量旋钮就是一个分压器：把输入信号分出一部分送给放大器。热敏电阻、光敏电阻也常接成分压器，把“温度/亮度”变成“电压”再送进芯片。</p></div>
+</div>
+    
+      
+<figure class="photo render3d"><img src="assets/3d/resistor.png" alt="色环电阻：二端元件，伏安特性是一条过原点的直线。" loading="lazy"><figcaption>色环电阻：二端元件，伏安特性是一条过原点的直线。 <span class="credit">Three.js 3D 渲染</span></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>对外一样就能换；戴维南就是“电池 + 电阻”。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：欧姆定律</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：节点与网孔</span></div>
+    </section>
+
+    <!-- 05 -->
+    <section class="chapter" id="methods">
+      <div class="chapter-head">
+        <div class="chapter-num">05</div>
+        <div><h2>节点法与网孔法：让方程自己长出来</h2><div class="tag">两个万能算法</div></div>
+      </div>
+      <p class="lead">前面的等效靠“看图找结构”，不是每个电路都长得那么乖。节点法和网孔法是两个“必定能列方程”的通用办法。</p>
+
+      <div class="tabs" id="methodTabs">
+        <button class="tab active" data-tab="nodal">节点法</button>
+        <button class="tab" data-tab="mesh">网孔法</button>
+      </div>
+
+      <div class="tab-body active" id="tab-nodal">
+        <ol class="steps">
+          <li>选一个节点当参考点（0 V）。</li>
+          <li>对其余每个节点写一条 KCL：流出的电流之和为零。</li>
+          <li>每条支路电流用两端节点电压之差表示。</li>
+          <li>解方程，得到各节点电压，再求其他量。</li>
+        </ol>
+        <p>电压源夹在两个非参考节点之间时，把这两个节点打包成<b>超节点</b>：对包围面写一条 KCL，再补一条“两节点电压差等于电源电压”。电压源一端接地时，那个节点的电压直接已知。</p>
+      </div>
+
+      <div class="tab-body" id="tab-mesh">
+        <ol class="steps">
+          <li>确认电路是平面电路（能画在纸上、导线不交叉）。</li>
+          <li>给每个“窗格”设一个顺时针的网孔电流。</li>
+          <li>绕每个窗格写 KVL。</li>
+          <li>解出网孔电流，再求支路电流和电压。</li>
+        </ol>
+        <p>网孔电流是假想的环流，但每条支路电流都能用它表示；KCL 会自动满足，所以只需要 KVL。电流源夹在两个网孔之间时，合成<b>超网孔</b>：绕外圈写 KVL，再补一条电流约束。</p>
+      </div>
+
+      <div class="split" style="margin-top:18px">
+        <div class="widget">
+          <h3>互动 · 节点电压与网孔环流</h3>
+          <p class="hint">在上方切换“节点法 / 网孔法”。拖动电源和 R₂，看方程与解怎么变。</p>
+          <canvas id="methodCanvas" style="aspect-ratio:2/1.2"></canvas>
+          <div class="controls">
+            <div class="control"><label for="mVs">V<sub>s</sub></label><input id="mVs" type="range" min="6" max="24" step="1" value="12"><output id="mVsOut">12 V</output></div>
+            <div class="control"><label for="mR2">R<sub>2</sub></label><input id="mR2" type="range" min="2" max="12" step="1" value="6"><output id="mR2Out">6 Ω</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">v<sub>A</sub> <b id="mAOut">—</b></span>
+            <span class="chip">v<sub>B</sub> <b id="mBOut">—</b></span>
+            <span class="chip">i₁ <b id="mI1Out">—</b></span>
+            <span class="chip">i₂ <b id="mI2Out">—</b></span>
+          </div>
+          <div class="eq" id="methodEq" style="font-size:13px;margin-top:12px"></div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">怎么选？</h3>
+          <p>节点少，用节点法；网孔少，用网孔法。含电流源多，节点法省事；含电压源多，网孔法省事。</p>
+          <p>含受控源时，先把它当独立源列方程，列完再“撕开”，把控制量代回去。矩阵不再对称，这是有源电路的特征。</p>
+          <div class="pitfall"><b>别踩坑：</b>单位要配套，kΩ 配 mA 配 V；电压源省节点方程，电流源省网孔方程，别记反。</div>
+        </div>
+      </div>
+    
+<div class="deep">
+  <h3>再深入一点：超节点、超网孔与“观察法”</h3>
+  <div class="deep-grid">
+    <div>
+      <p>电压源夹在两个非参考节点之间，这两个节点的电压差被固定了。把它们打包成一个<b>超节点</b>：对包围面写一条 KCL，再补一条“两个节点电压之差等于电源电压”。电压源一端接地时，那个节点电压直接已知，连方程都不用写。</p>
+      <p>电流源夹在两个网孔之间，合成<b>超网孔</b>：绕外圈写一条 KVL，再补一条“两个网孔电流之差等于电流源电流”。</p>
+      <p>方程有固定的“形状”：节点矩阵对角是接在该节点的电导之和，非对角是负的互电导；网孔矩阵完全对偶。这就是观察法。含受控源时先贴住、列方程、再撕开，矩阵会失去对称。</p>
+      <div class="eq">节点：G v = i<br>G<sub>ii</sub> = ΣG<br>G<sub>ij</sub> = −ΣG<sub>ij</sub><br>（网孔对偶）</div>
+    </div>
+    <div class="widget">
+  <h3>互动 · 超节点：打包与拆开</h3>
+  <p class="hint">电压源夹在两个节点之间。点按钮把两个节点“打包”，看方程怎么少一条。</p>
+  <canvas id="superCanvas" style="aspect-ratio:2/1.05"></canvas>
+  <div class="controls"><button class="btn" id="superBtn" type="button">打包超节点</button></div>
+  <div class="readout">
+    <span class="chip" id="superState">普通节点</span>
+    <span class="chip">vA−vB = <b>6 V</b></span>
+  </div>
+  <div class="eq" id="superEq" style="font-size:13px;margin-top:10px">KCL(A) + KCL(B) + v<sub>A</sub>−v<sub>B</sub>=V<sub>s</sub></div>
+</div>
+  </div>
+</div>
+    
+      <div class="app">
+  <div class="ico">🧮</div>
+  <div><h4>现实里：电路仿真软件</h4>
+  <p>SPICE 这类软件内部做的事，就是替你列节点方程、解矩阵。你画的每一根线，最后都变成 Gv = i 里的一行。学会节点法，就看懂了仿真器的“心脏”。</p></div>
+</div>
+    
+      
+<div class="deep">
+  <h3>再深入一点：节点方程与网孔方程是“数”出来的</h3>
+  <div class="deep-grid">
+    <div>
+      <p><b>节点法思路：</b>选参考点，未知量是节点电压；对每个非参考节点写 KCL，支路电流用 (V<sub>i</sub> − V<sub>j</sub>)/R 表示。</p>
+      <div class="eq">(V<sub>1</sub>−V<sub>s</sub>)/R<sub>1</sub> + V<sub>1</sub>/R<sub>2</sub> + (V<sub>1</sub>−V<sub>2</sub>)/R<sub>3</sub> = 0<br>(V<sub>2</sub>−V<sub>1</sub>)/R<sub>3</sub> + V<sub>2</sub>/R<sub>4</sub> = 0</div>
+      <p>按 V<sub>1</sub>、V<sub>2</sub> 合并同类项，就得到矩阵：</p>
+      <div class="eq">(1/R<sub>1</sub>+1/R<sub>2</sub>+1/R<sub>3</sub>)V<sub>1</sub> − (1/R<sub>3</sub>)V<sub>2</sub> = V<sub>s</sub>/R<sub>1</sub><br>−(1/R<sub>3</sub>)V<sub>1</sub> + (1/R<sub>3</sub>+1/R<sub>4</sub>)V<sub>2</sub> = 0</div>
+      <p>这就是 Gv = i：对角线是接在该节点的电导之和，非对角线是负的互电导。</p>
+    </div>
+    <div>
+      <p><b>网孔法思路：</b>未知量是网孔电流；对每个网孔写 KVL，公共支路的电流是两个网孔电流之差。</p>
+      <div class="eq">(R<sub>1</sub>+R<sub>2</sub>)i<sub>1</sub> − R<sub>2</sub>i<sub>2</sub> = V<sub>s</sub><br>−R<sub>2</sub>i<sub>1</sub> + (R<sub>2</sub>+R<sub>3</sub>+R<sub>4</sub>)i<sub>2</sub> = 0</div>
+      <p>写成 Zi = v：对角线是网孔自阻，非对角线是互阻的负值。</p>
+      <p><b>对偶：</b>节点法数“流出的电流”，网孔法数“绕圈的电压”；G ↔ R，v ↔ i，KCL ↔ KVL。</p>
+    </div>
+  </div>
+</div>
+
+    <div class="memo"><b>一句话记住</b><span>节点数电流，网孔数电压；电压源包超节点，电流源包超网孔。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：KCL / KVL</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：受控源与动态</span></div>
+    </section>
+
+    <!-- 06 -->
+    <section class="chapter" id="active">
+      <div class="chapter-head">
+        <div class="chapter-num">06</div>
+        <div><h2>受控源与运放：会“听指挥”的元件</h2><div class="tag">有源电路的开端</div></div>
+      </div>
+      <p class="lead">独立源自己说了算；受控源听别处的电压或电流指挥。它让电路第一次有了“放大”和“负电阻”这些本事。</p>
+      <ul>
+        <li><b>VCVS</b>：电压控制电压源，系数是无量纲的电压增益。</li>
+        <li><b>VCCS</b>：电压控制电流源，系数是跨导。</li>
+        <li><b>CCVS</b>：电流控制电压源，系数是转移电阻。</li>
+        <li><b>CCCS</b>：电流控制电流源，系数是电流增益。</li>
+      </ul>
+
+      <div class="split">
+        <div class="figure">
+          <img class="figimg" src="assets/fig/opamp.png" alt="反相运算放大器电路" loading="lazy">
+          <figcaption>反相放大：输入经 R<sub>in</sub> 接反相端，R<sub>f</sub> 从输出接回反相端</figcaption>
+        </div>
+        <div class="widget">
+          <h3>互动 · 反相放大器</h3>
+          <p class="hint">输入固定 1 V。拖动两个电阻，看增益和输出怎么变。</p>
+          <div class="controls">
+            <div class="control"><label for="rin">R<sub>in</sub></label><input id="rin" type="range" min="1" max="10" step="0.5" value="2"><output id="rinOut">2 kΩ</output></div>
+            <div class="control"><label for="rf">R<sub>f</sub></label><input id="rf" type="range" min="1" max="50" step="1" value="10"><output id="rfOut">10 kΩ</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">增益 <b id="gainOut">−5.0</b></span>
+            <span class="chip">输出 <b id="voutOut">−5.0 V</b></span>
+          </div>
+          <div class="eq" style="margin-top:14px">v<sub>o</sub> / v<sub>i</sub> = − R<sub>f</sub> / R<sub>in</sub></div>
+        </div>
+      </div>
+
+      <p><b>虚短与虚断：</b>理想运放增益无穷大，加上负反馈后，两个输入端电压几乎相等（虚短），且几乎不取电流（虚断）。反相放大时，反相端几乎是 0 V，叫“虚地”。</p>
+      <p><b>反馈：</b>把输出送回输入端。负反馈用增益换带宽、线性度和阻抗；正反馈太强会自激。判断稳定要看环路增益：绕一圈既不衰减、相位又转满一圈，就会振荡。</p>
+      <p><b>二极管与三极管：</b>本质非线性。工程上的办法是“小信号”：在直流工作点画一条切线，把曲线当直线，再用线性电路的方法分析变化量。</p>
+
+      <div class="pitfall"><b>别踩坑：</b>虚短只在负反馈、输出未饱和时成立；开环比较器或输出撞到电源轨，就不能再用虚短。</div>
+    
+<div class="deep">
+  <h3>再深入一点：四种受控源与“贴住—撕开”</h3>
+  <div class="deep-grid">
+    <div>
+      <p>受控源有四种：电压控制电压源（VCVS，系数 μ 无量纲）、电压控制电流源（VCCS，系数 g<sub>m</sub> 是跨导）、电流控制电压源（CCVS，系数 r<sub>m</sub> 是转移电阻）、电流控制电流源（CCCS，系数 β 是电流增益）。</p>
+      <p>分析时先把受控源“贴住”，当成独立源列方程；列完再“撕开”，把它的值用控制量替换，控制量用节点电压或网孔电流表示，代回去解。含受控源时矩阵不再对称，这是有源电路的标志。</p>
+      <p>受控源还能造出<b>负电阻</b>：让 CCVS 的控制量取自身端电流，得到 v = −2i，端口功率 p = −2i² 恒为负，确实在向外供能。它不是永动机，只是有源电路在小信号下的等效。</p>
+      <p>运放是“增益无穷大的 VCVS”。有限增益时 v<sub>o</sub> = μ(v<sub>+</sub> − v<sub>−</sub>)；μ → ∞ 且负反馈时，v<sub>+</sub> = v<sub>−</sub>（虚短），输入端不取电流（虚断）。</p>
+      <div class="eq">v<sub>c</sub> = μ v<sub>x</sub><br>i<sub>c</sub> = g<sub>m</sub> v<sub>x</sub><br>v<sub>c</sub> = r<sub>m</sub> i<sub>x</sub><br>i<sub>c</sub> = β i<sub>x</sub></div>
+    </div>
+    <div class="widget">
+  <h3>互动 · 四种受控源</h3>
+  <p class="hint">切换类型，拖动增益。受控源的输出永远跟着控制量走。</p>
+  <div class="tabs mini" id="depTabs">
+    <button class="tab active" data-dep="vcvs">VCVS</button>
+    <button class="tab" data-dep="vccs">VCCS</button>
+    <button class="tab" data-dep="ccvs">CCVS</button>
+    <button class="tab" data-dep="cccs">CCCS</button>
+  </div>
+  <canvas id="depCanvas" style="aspect-ratio:2/1.1"></canvas>
+  <div class="controls">
+    <div class="control"><label for="depK">增益</label><input id="depK" type="range" min="0.5" max="5" step="0.1" value="2"><output id="depKOut">2.0</output></div>
+  </div>
+  <div class="readout">
+    <span class="chip" id="depType">VCVS</span>
+    <span class="chip">输出 <b id="depOut">4.0 V</b></span>
+  </div>
+  <div class="eq" id="depEq" style="font-size:13px;margin-top:10px">v<sub>c</sub> = μ v<sub>x</sub></div>
+</div>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>再补一张图：积分器与微分器</h3>
+  <div class="deep-grid">
+    <div>
+      <p>把反相放大器的输入电阻换成电容，就成了<b>积分器</b>：输入电流给电容充电，输出与输入的积分成正比。它的 s 域增益是 −1/(sRC)，在频域里是一条 −20 dB/十倍频的斜线，相位恒为 90°。</p>
+      <p>把反馈电阻换成电容、输入保留电阻，就成了<b>微分器</b>：输出与输入的变化率成正比，s 域增益是 −sRC，频域斜率 +20 dB/十倍频。</p>
+      <p>积分器会“记”住历史，常用于滤波、控制和模拟计算；微分器会放大高频噪声，实际电路里往往要串一个小电阻限制高频增益。</p>
+      <div class="eq">积分器：H(s) = −1/(sRC)<br>v<sub>o</sub> = −(1/RC)∫v<sub>i</sub>dt<br>微分器：H(s) = −sRC<br>v<sub>o</sub> = −RC dv<sub>i</sub>/dt</div>
+    </div>
+    <figure class="figure">
+      <div class="figpair"><img src="assets/fig/integrator.png" alt="积分器电路" loading="lazy"><img src="assets/fig/differentiator.png" alt="微分器电路" loading="lazy"></div>
+      <figcaption>电容放在输入是积分，放在反馈是微分</figcaption>
+    </figure>
+  </div>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · 反相放大器的增益</h4>
+  <div class="step"><b>①</b><span>负反馈下虚短：反相端电压等于同相端，而同相端接地，所以反相端是 0 V（虚地）。</span></div>
+  <div class="step"><b>②</b><span>虚断：运放输入端不取电流，所以流过 R<sub>in</sub> 的电流只能全部流过 R<sub>f</sub>。</span></div>
+  <div class="eq">(v<sub>i</sub> − 0)/R<sub>in</sub> = (0 − v<sub>o</sub>)/R<sub>f</sub></div>
+  <div class="step"><b>③</b><span>两边整理，就得到增益。</span></div>
+  <div class="eq">v<sub>o</sub>/v<sub>i</sub> = <b>− R<sub>f</sub>/R<sub>in</sub></b></div>
+  <p class="deriv-end">负号来自“电流流进虚地再流出去”的方向；增益大小只由两个电阻之比决定，和运放本身的开环增益几乎无关——这正是负反馈的魔力。</p>
+</div>
+<div class="app">
+  <div class="ico">🎤</div>
+  <div><h4>现实里：麦克风前置放大</h4>
+  <p>麦克风输出的信号只有几毫伏，必须先放大再处理。反相/同相放大器就是最常用的“第一级”。虚短让增益只取决于电阻，温度、批次差异都被反馈“压住”了。</p></div>
+</div>
+    
+      
+<figure class="photo render3d"><img src="assets/3d/opamp.png" alt="LM741 运放：八脚双列直插，对外只表现为虚短、虚断。" loading="lazy"><figcaption>LM741 运放：八脚双列直插，对外只表现为虚短、虚断。 <span class="credit">Three.js 3D 渲染</span></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>受控源听指挥，运放把“指挥”推到无穷大。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：受控源</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：有源滤波与稳定</span></div>
+    </section>
+
+    <!-- 07 -->
+    <section class="chapter" id="storage">
+      <div class="chapter-head">
+        <div class="chapter-num">07</div>
+        <div><h2>电容与电感：电路的“记忆”</h2><div class="tag">储能 · 连续性 · 换路</div></div>
+      </div>
+      <p class="lead">电阻是“现在”的元件，电压电流随时成正比；电容和电感会“记住”过去，因为它们把能量存了起来。</p>
+
+      <div class="split">
+        <div class="card" style="background:linear-gradient(180deg,#f2fbf8,#fff);border-color:#cdeee6">
+          <div class="ico">🫙</div>
+          <h4>电容：储水罐</h4>
+          <p>存电荷，电荷 = 电容 × 电压。电流 = 电容 × 电压变化率。</p>
+          <p>电压变化越快，电流越大；电压不变（直流稳态），电流为零，相当于<b>开路</b>。</p>
+          <p>只要电流有限，电容电压<b>不能瞬间跳变</b>。能量储在电场里。</p>
+        </div>
+        <div class="card" style="background:linear-gradient(180deg,#fdf6e8,#fff);border-color:#f0dfb8">
+          <div class="ico">⚙️</div>
+          <h4>电感：飞轮</h4>
+          <p>存磁链，磁链 = 电感 × 电流。电压 = 电感 × 电流变化率。</p>
+          <p>电流变化越快，电压越大；电流不变（直流稳态），电压为零，相当于<b>短路</b>。</p>
+          <p>只要电压有限，电感电流<b>不能瞬间跳变</b>。能量储在磁场里。</p>
+        </div>
+      </div>
+
+      <div class="example"><b>算一笔能量：</b>1 μF 电容充到 5 V，能量是 ½ × 10⁻⁶ × 25 = 12.5 μJ。储能不多，但足以让电容在断电后继续“记”一会儿。</div>
+
+      <p><b>换路：</b>开关动作的一瞬间，电路分成“动作前”和“动作后”。先用动作前的电路求电容电压、电感电流（它们不能跳），再把电容换成同值电压源、电感换成同值电流源，去解动作后的电路。这个“替代”动作，就是常说的 0⁻ 到 0⁺。</p>
+
+      <div class="pitfall"><b>别踩坑：</b>电容电压连续，但电容电流可以跳；电感电流连续，但电感电压可以跳。连续的是“状态量”，不是所有量。</div>
+    
+<div class="deep">
+  <h3>再深入一点：电容与电感的“对偶”</h3>
+  <div class="deep-grid">
+    <div>
+      <p>电容的“状态量”是电压：q = Cv，i = C dv/dt。只要电流有限，电压就不能跳；直流稳态时电流为零，电容相当于开路。能量储在电场里。</p>
+      <div class="eq energy-eq">w<sub>C</sub> = ½Cv²</div>
+      <p>电感的“状态量”是电流：λ = Li，v = L di/dt。只要电压有限，电流就不能跳；直流稳态时电压为零，电感相当于短路。能量储在磁场里。</p>
+      <div class="eq energy-eq">w<sub>L</sub> = ½Li²</div>
+      <p>串并联的规律正好“反过来”：电容像电导一样相加（并联相加），电感像电阻一样相加（串联相加）。突然把两个电容并联、或把电感支路断开，会出现冲激，状态量会跳变。</p>
+      <div class="eq">i = C dv/dt<br>v = L di/dt</div>
+    </div>
+    <div class="widget">
+  <h3>互动 · 电容像水桶，电感像飞轮</h3>
+  <p class="hint">电容存电荷，电压不能跳；电感存磁通，电流不能跳。切换看看。</p>
+  <canvas id="clCanvas" style="aspect-ratio:2/1.1"></canvas>
+  <div class="controls">
+    <button class="btn" id="clBtn" type="button">切换：电容 / 电感</button>
+    <div class="control"><label for="clDrive">外加电流 / 电压</label><input id="clDrive" type="range" min="-1" max="1" step="0.05" value="0.6"><output id="clDriveOut">0.60</output></div>
+  </div>
+  <div class="readout">
+    <span class="chip" id="clMode">电容</span>
+    <span class="chip">状态 <b id="clState">充电</b></span>
+    <span class="chip">v / i <b id="clVal">0.60</b></span>
+  </div>
+</div>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：串并联、直流稳态与相容单位</h3>
+  <ul>
+    <li><b>电容</b>：并联相加（像电导），串联取倒数和；分压时大电容分到小电压。</li>
+    <li><b>电感</b>：串联相加（像电阻），并联取倒数和；分流时大电感分到小电流。</li>
+    <li><b>直流稳态</b>：电容开路、电感短路；但“短路”上的电流、“开路”上的电压由外电路决定，不能凭空分配。</li>
+    <li><b>相容单位</b>：kΩ 配 mA 配 V，μF 配 μs，MΩ 配 μA。配套之后数字直接相乘，少写一堆 10 的幂。</li>
+  </ul>
+  <p>两个并联电感被电流源驱动时，直流等效只给出“总电流”，分配要靠磁链相等（λ₁ = λ₂）或“缓慢升流”的极限来定；两个串联电容被隔离时，电荷相等（q₁ = q₂）。这类“奇异稳态”是考试里最容易漏的地方。</p>
+</div>
+    
+      
+<div class="deep">
+  <h3>推导：½Cv² 和 ½Li² 的“½”从哪来</h3>
+  <p><b>思路：</b>功率是能量对时间的导数，p = vi；把元件的 v-i 关系代进去，对时间积分即可。</p>
+  <div class="eq">w<sub>C</sub> = ∫p dt = ∫v·C(dv/dt)dt = ∫C v dv = ½Cv²</div>
+  <p>这里用了换元 dv = (dv/dt)dt。图形上，v 从 0 升到 V 时，三角形面积就是 ½CV²。</p>
+  <p>电感同理：</p>
+  <div class="eq">w<sub>L</sub> = ∫v i dt = ∫L(di/dt)i dt = ∫L i di = ½Li²</div>
+  <p>“½”不是魔法，是三角形面积；能量存进电场或磁场，撤掉源以后还能放出来。</p>
+</div>
+
+    <div class="app">
+  <div class="ico">📷</div>
+  <div><h4>现实里：闪光灯与继电器</h4>
+  <p>相机闪光灯先把电荷慢慢存进大电容，再瞬间放出，得到很强的闪光。继电器线圈是电感，断电瞬间电流想继续流，会在触点间打出火花——这就是“电感反峰电压”。</p></div>
+</div>
+    
+      
+<div class="photo-row"><figure class="photo render3d"><img src="assets/3d/capacitor.png" alt="铝电解电容：容量大，常用来滤波与储能。" loading="lazy"><figcaption>铝电解电容：容量大，常用来滤波与储能。 <span class="credit">Three.js 3D 渲染</span></figcaption></figure><figure class="photo render3d"><img src="assets/3d/inductor.png" alt="环形电感：导线绕在磁环上，把能量存进磁场。" loading="lazy"><figcaption>环形电感：导线绕在磁环上，把能量存进磁场。 <span class="credit">Three.js 3D 渲染</span></figcaption></figure></div>
+    <div class="memo"><b>一句话记住</b><span>电容记电压，电感记电流；连续的是状态量。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：v-i 与积分</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：一阶与二阶</span></div>
+    </section>
+
+    <!-- 08 -->
+    <section class="chapter" id="firstorder">
+      <div class="chapter-head">
+        <div class="chapter-num">08</div>
+        <div><h2>一阶电路：指数式地靠近</h2><div class="tag">时间常数 · 三要素</div></div>
+      </div>
+      <p class="lead">只含一个储能元件的电路，响应通常按指数规律靠近终值。它不会“嗖”地到位，而是越靠近越慢。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · RC 充电</h3>
+          <p class="hint">5 V 电源给电容充电。拖动电阻和电容，看曲线怎么“变胖”。</p>
+          <canvas id="rcCanvas" style="aspect-ratio:2/1"></canvas>
+          <div class="controls">
+            <div class="control"><label for="rval">R</label><input id="rval" type="range" min="1" max="100" step="1" value="10"><output id="rvalOut">10 kΩ</output></div>
+            <div class="control"><label for="cval">C</label><input id="cval" type="range" min="0.1" max="10" step="0.1" value="1"><output id="cvalOut">1.0 μF</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">时间常数 τ <b id="tauOut">10 ms</b></span>
+            <span class="chip">τ 时刻电压 <b id="tauV">3.16 V</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">三要素法</h3>
+          <p>一阶电路只要知道三样东西，就能直接写答案：</p>
+          <ol class="steps">
+            <li><b>初值</b>：换路后一瞬间的值，用 0⁺ 电路求。</li>
+            <li><b>终值</b>：时间足够长以后的值，电容开路、电感短路。</li>
+            <li><b>时间常数</b>：从储能元件两端看出去的等效电阻，配上 C 或 L。</li>
+          </ol>
+          <p>响应 = 终值 +（初值 − 终值）× 衰减指数。</p>
+          <div class="eq">v(t) = V<sub>∞</sub> + (V<sub>0</sub> − V<sub>∞</sub>) e<sup>−t/τ</sup></div>
+          <p>经过一个 τ，走完约 63%；经过五个 τ，基本到位。</p>
+        </div>
+      </div>
+
+      <p><b>低通与高通：</b>同一个 RC 电路，从电容看是低通（低频过、高频挡），从电阻看是高通（直流挡、跳变过）。截止频率是增益降到 0.707 倍的地方。</p>
+
+      <div class="pitfall"><b>别踩坑：</b>时间常数要用“从储能元件看出去”的等效电阻，不是随便挑一个；初值要用 0⁺ 电路，不能用 0⁻ 的电路直接算其他量。</div>
+    
+<div class="deep">
+  <h3>再深入一点：低通、高通与“三要素”</h3>
+  <div class="deep-grid">
+    <div>
+      <p>RC 低通取电容电压：H(jω) = 1/(1 + jωRC)，截止频率 ω<sub>c</sub> = 1/RC。过了截止点，频率每升高十倍，增益下降 20 dB。RC 高通取电阻电压：H(jω) = jωRC/(1 + jωRC)，低频被挡住。</p>
+      <p>更一般的一阶方程是 (p + a)y = (bp + c)x，极点 −a 决定时间常数 τ = 1/a，零点只改变波形的“配比”。</p>
+      <p>三要素：初值 y(0⁺)、终值 y(∞)、时间常数 τ。把三者代入指数式，就是全响应。τ 要用“从储能元件看出去”的等效电阻来算。</p>
+      <div class="eq">H(jω) = 1/(1 + jωRC)<br>ω<sub>c</sub> = 1/RC<br>y(t) = y(∞) + [y(0⁺) − y(∞)]e<sup>−t/τ</sup></div>
+    </div>
+    <figure class="figure">
+      <div class="figpair"><img src="assets/fig/rc_low.png" alt="RC 低通电路" loading="lazy"><img src="assets/fig/rc_high.png" alt="RC 高通电路" loading="lazy"></div>
+      <figcaption>同一个 RC，从电容看是低通，从电阻看是高通</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>再补一张图：RL 电路与“飞轮”</h3>
+  <div class="deep-grid">
+    <div>
+      <p>RL 电路和 RC 是“对偶”的：电容记电压，电感记电流；RC 的时间常数是 RC，RL 的时间常数是 L/R。</p>
+      <p>开关合上，电感电流从零慢慢爬向终值；开关断开，电感为了维持电流，会在两端产生很高的反向电压——这就是继电器、点火线圈和“关断过电压”的来源。</p>
+      <p>直流稳态时电感相当于短路，电流由外电路决定；分析换路时，电感电流不能跳，要用它作为 0⁺ 电路的初始条件。</p>
+      <div class="eq">τ = L/R<br>i(t) = i(∞) + [i(0⁺) − i(∞)]e<sup>−t/τ</sup><br>v<sub>L</sub> = L di/dt</div>
+    </div>
+    <figure class="figure">
+      <img class="figimg" src="assets/fig/rl.png" alt="RL 一阶电路" loading="lazy">
+      <figcaption>电感像飞轮：电流想维持原样，强行断开就会“顶”出高压</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：一般一阶、有源一阶与真实元件</h3>
+  <ul>
+    <li><b>一般一阶</b>：(p + a)y = (bp + c)x。分母的根 −a 定时间常数，分子的零点只改“直通”和“配比”。</li>
+    <li><b>有源一阶</b>：受控源参数进入分母，可能让 a 变号：a &gt; 0 稳定，a = 0 临界，a &lt; 0 发散。</li>
+    <li><b>仿真图</b>：用积分器、加法器、比例器搭方程；尽量不用微分器，因为它放大高频噪声。</li>
+    <li><b>真实元件</b>：电容有漏电阻，电感有绕线电阻，电阻有寄生电容。模型只在关心的频率、时间尺度内“够用”。</li>
+  </ul>
+  <p>一阶电路的“快慢”全写在 τ 里；而 τ 只由电路自身参数决定，和输入大小无关。这是它最好用的地方。</p>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · RC 充电曲线是怎么解出来的</h4>
+  <div class="step"><b>①</b><span>对电容节点写 KCL：电容电流 + 电阻电流 = 0。</span></div>
+  <div class="eq">C dv/dt + (v − V<sub>s</sub>)/R = 0</div>
+  <div class="step"><b>②</b><span>整理成一阶标准形，右边是“强迫项”。</span></div>
+  <div class="eq">dv/dt + v/(RC) = V<sub>s</sub>/(RC)</div>
+  <div class="step"><b>③</b><span>齐次解是指数，特解是常数 V<sub>s</sub>。</span></div>
+  <div class="eq">v(t) = V<sub>s</sub> + A e<sup>−t/RC</sup></div>
+  <div class="step"><b>④</b><span>用初始条件 v(0) = V₀ 定出 A。</span></div>
+  <div class="eq">v(t) = V<sub>s</sub> + (V₀ − V<sub>s</sub>) e<sup>−t/RC</sup></div>
+  <p class="deriv-end">τ = RC 不是“背下来的”，而是微分方程里指数项的系数；它决定“多快走完 63%”。</p>
+</div>
+<div class="app">
+  <div class="ico">⏱️</div>
+  <div><h4>现实里：按键去抖与闪光充电</h4>
+  <p>机械按键按下时会“抖”出好几个脉冲，常用 RC 低通把它磨平。闪光灯“充多久能闪”也由 RC 时间常数决定：电容越大、电阻越大，等得越久。</p></div>
+</div>
+    
+      <div class="memo"><b>一句话记住</b><span>一阶看三样：初值、终值、时间常数。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：电容与电感</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：二阶与稳定</span></div>
+    </section>
+
+    <!-- 09 -->
+    <section class="chapter" id="secondorder">
+      <div class="chapter-head">
+        <div class="chapter-num">09</div>
+        <div><h2>二阶电路：三种“脾气”</h2><div class="tag">阻尼 · 振铃 · 稳定</div></div>
+      </div>
+      <p class="lead">电容想维持电压，电感想维持电流。两个一起上，就会“打架”：有的电路慢慢爬，有的刚好不振荡，有的会冲过头再荡回来。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 阻尼三态</h3>
+          <p class="hint">拖动品质因数 Q。Q 越大，阻尼越小，过冲和振铃越明显。</p>
+          <canvas id="dampCanvas" style="aspect-ratio:2/1"></canvas>
+          <div class="controls">
+            <div class="control"><label for="qval">Q</label><input id="qval" type="range" min="0.2" max="10" step="0.1" value="5"><output id="qvalOut">5.0</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">阻尼比 ζ <b id="zetaOut">0.10</b></span>
+            <span class="chip">状态 <b id="dampState">欠阻尼</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">三种阻尼</h3>
+          <ul>
+            <li><b>过阻尼</b>：阻尼很大，慢慢爬向终值，不振荡。</li>
+            <li><b>临界阻尼</b>：刚好不振荡，是不振荡里最快的。</li>
+            <li><b>欠阻尼</b>：冲过终值，来回振荡，慢慢衰减。</li>
+          </ul>
+          <p>Q 越大，阻尼越小，振荡越明显、持续越久；Q = 0.5 时正好临界。</p>
+          <p>极点决定响应的形状：全在左半平面就稳定；有极点在右半平面，响应会越来越大。</p>
+          <div class="eq">ζ = 1 / (2Q)<br>Q = ω<sub>0</sub> / (2α)</div>
+        </div>
+      </div>
+
+      <p><b>高阶电路</b>可以拆成若干“简单项”之和，每一项对应一个极点；极点定形状，零点只改比例。拆项的方法叫部分分式展开，拆完查表就能回到时间域。</p>
+      <p><b>Routh 算法</b>：不想解高次方程时，把系数排成表，数第一列变号几次，就知道有几个右半平面根，从而判断稳定。</p>
+
+      <div class="pitfall"><b>别踩坑：</b>欠阻尼时实际振荡频率比自然频率略低，不能混用；Q 小于 0.5 根本没有振荡，别硬套振铃公式。</div>
+    
+<div class="deep">
+  <h3>再深入一点：二阶的“标准形”</h3>
+  <div class="deep-grid">
+    <div>
+      <p>二阶低通的标准形是 H(s) = ω<sub>0</sub>²/(s² + 2ζω<sub>0</sub>s + ω<sub>0</sub>²)。ζ 是阻尼比：ζ &gt; 1 过阻尼，ζ = 1 临界，ζ &lt; 1 欠阻尼。</p>
+      <p>串联 RLC 中，自然频率、阻尼比与 Q 的关系由下面这组公式给出。电阻越大，阻尼越大，振铃越少，但响应越慢。</p>
+      <p>二阶响应可以拆成两个一阶项（过阻尼）、一个重根项（临界）或一对共轭项（欠阻尼）。极点全在左半平面就稳定；Routh 算法只数第一列变号，就能判断右半平面根有几个。</p>
+      <div class="eq" data-tex="\begin{aligned}s^2 + 2\zeta\omega_0 s + \omega_0^2 = 0 \\ \omega_0 = \frac{1}{\sqrt{LC}} \\ \zeta = \frac{R}{2}\sqrt{\frac{C}{L}} \\ Q = \frac{\omega_0 L}{R}\end{aligned}">s² + 2ζω<sub>0</sub>s + ω<sub>0</sub>² = 0<br>ω<sub>0</sub> = 1/√(LC)<br>ζ = (R/2)√(C/L)<br>Q = ω<sub>0</sub>L/R</div>
+    </div>
+    <figure class="figure">
+      <img class="figimg" src="assets/fig/rlc.png" alt="串联 RLC 电路" loading="lazy">
+      <figcaption>串联 RLC：电阻定阻尼，LC 定自然频率</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：部分分式与 Routh 判稳</h3>
+  <ul>
+    <li><b>部分分式</b>：真分式才能直接拆；分子次数不低于分母时，先做长除。单根用留数（覆盖法），重根要配合求导，共轭复根可合并成“二次分母 + 一次分子”。</li>
+    <li><b>极点与响应</b>：实极点给指数，重极点给“t 乘指数”，共轭极点给衰减振荡。零点只改系数，不改“形状”。</li>
+    <li><b>Routh</b>：把系数排成表，第一列变号几次，就有几个右半平面根。第一列出现零、或整行为零时，要乘 (s + a) 或用导数行替换。</li>
+  </ul>
+  <p>稳定的判据只看极点，不看零点；临界稳定要求虚轴上的极点都是一阶的。</p>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · RLC 的阻尼比从哪来</h4>
+  <div class="step"><b>①</b><span>串联 RLC，对回路写 KVL。</span></div>
+  <div class="eq">L di/dt + R i + v<sub>C</sub> = v<sub>s</sub></div>
+  <div class="step"><b>②</b><span>用电容关系 i = C dv<sub>C</sub>/dt，把 i 换成 v<sub>C</sub>。</span></div>
+  <div class="eq">LC d²v<sub>C</sub>/dt² + RC dv<sub>C</sub>/dt + v<sub>C</sub> = v<sub>s</sub></div>
+  <div class="step"><b>③</b><span>两边除以 LC，凑成标准形。</span></div>
+  <div class="eq">v″ + (R/L)v′ + (1/LC)v = v<sub>s</sub>/(LC)</div>
+  <div class="step"><b>④</b><span>和 s² + 2ζω₀s + ω₀² 对比，逐项对号。</span></div>
+  <div class="eq" data-tex="\omega_0 = \frac{1}{\sqrt{LC}} \quad 2\zeta\omega_0 = \frac{R}{L} \;\Rightarrow\; \zeta = \frac{R}{2}\sqrt{\frac{C}{L}}">ω₀ = 1/√(LC)　2ζω₀ = R/L　⇒　<b>ζ = (R/2)√(C/L)</b></div>
+  <p class="deriv-end">电阻越大，ζ 越大，越不容易振；电感越大、电容越大，ω₀ 越低，振荡越慢。</p>
+</div>
+<div class="app">
+  <div class="ico">🔊</div>
+  <div><h4>现实里：音箱分频器与汽车悬挂</h4>
+  <p>音箱里的 LC 网络把高音、低音分到不同喇叭；设计不好就会在分频点“振铃”。汽车悬挂是同一个二阶方程：弹簧定 ω₀，减震器定 ζ，太软会晃、太硬会颠。</p></div>
+</div>
+    
+      
+<figure class="photo"><img src="assets/photos/speaker.jpg" alt="扬声器：电信号推动振膜，本质是一个机电二阶系统。" loading="lazy"><figcaption>扬声器：电信号推动振膜，本质是一个机电二阶系统。 <a href="https://commons.wikimedia.org/wiki/File:P21653A_loudspeaker_-_front_view.jpg" target="_blank" rel="noopener">图源：Mister rf / CC BY-SA 4.0</a></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>二阶看阻尼：过、临界、欠；Q 越大越振。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：一阶</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：频响与拉氏</span></div>
+    </section>
+
+    <!-- 10 -->
+    <section class="chapter" id="phasor">
+      <div class="chapter-head">
+        <div class="chapter-num">10</div>
+        <div><h2>相量：给正弦拍一张“快照”</h2><div class="tag">复数 · 阻抗 · 谐振</div></div>
+      </div>
+      <p class="lead">第 09 节我们解的是微分方程，关心的是“从换路到稳定”的全过程。可如果激励本来就是正弦，而且我们只关心长期剩下的那部分，还需要每次列微分方程吗？这一节只解决一件事：把正弦稳态变成复数代数。</p>
+
+      <p>一个正弦量由<b>三要素</b>决定：幅值 V<sub>m</sub>、角频率 ω、初相 θ。频率通常由源决定，所以“求响应”实际只求幅值和相位两个数。</p>
+
+      <div class="note"><b>先接上一节：</b>二阶电路的解 = 暂态 + 稳态。暂态由特征根决定，会衰减；稳态由外加正弦决定，频率与源相同。相量法不是另一套电路理论，它只是“求稳态”的捷径。</div>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 旋转的相量</h3>
+          <p class="hint">电压固定 10 V，拖动电阻和感抗，看电流相量怎么转、怎么变短。相量图里的长度是幅值，夹角是相位差。</p>
+          <canvas id="phasorCanvas" style="aspect-ratio:2/1.55"></canvas>
+          <div class="controls">
+            <div class="control"><label for="pr">R</label><input id="pr" type="range" min="1" max="10" step="0.5" value="3"><output id="prOut">3 Ω</output></div>
+            <div class="control"><label for="px">X<sub>L</sub></label><input id="px" type="range" min="0" max="10" step="0.5" value="4"><output id="pxOut">4 Ω</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">|Z| <b id="zOut">5.0 Ω</b></span>
+            <span class="chip">相位 <b id="phiOut">−53°</b></span>
+            <span class="chip">|I| <b id="iOut">2.0 A</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">先看结论：阻抗是“复数版电阻”</h3>
+          <ul>
+            <li><b>电阻</b>：阻抗是实数 R，电压与电流同相。</li>
+            <li><b>电感</b>：阻抗是 jωL，电压超前电流 90°。</li>
+            <li><b>电容</b>：阻抗是 1/(jωC)，电压滞后电流 90°。</li>
+          </ul>
+          <p>有了阻抗，欧姆定律、KCL、KVL、节点法、网孔法、戴维南全部照搬，只是实数换成复数。</p>
+          <div class="eq">Z<sub>R</sub> = R<br>Z<sub>L</sub> = jωL<br>Z<sub>C</sub> = 1/(jωC)</div>
+          <p><b>但先别急着记。</b>下面从“为什么稳态仍是正弦”开始，把这条结论一步步推出来。</p>
+        </div>
+      </div>
+
+      <h3>一、正弦稳态：为什么只看“剩下”的那部分</h3>
+      <p>设线性电路由正弦源驱动：</p>
+      <div class="eq">v<sub>s</sub>(t) = V<sub>m</sub> cos(ωt + θ)</div>
+      <p>电路里有 R、L、C，列出来是常系数线性微分方程。它的完全解由两部分组成：</p>
+      <div class="eq">完全解 = 暂态解 + 稳态解</div>
+      <p>暂态解是齐次方程的通解，由特征根决定：稳定电路（特征根不在 jω 轴上）里它一定衰减。稳态解是特解，由外加源“逼”出来。关键问题是：这个特解长什么样？</p>
+      <p><b>思路：先猜形式，再代回验证。</b>因为方程是线性的、源是频率 ω 的正弦，猜特解也是同频正弦，只是幅值和相位待定：</p>
+      <div class="eq">v<sub>p</sub>(t) = A cos(ωt + φ)</div>
+      <p>把它代回微分方程。求导只会把 cos 变成 sin、再变回 cos，频率始终是 ω；方程两边同频，比较 cos 和 sin 的系数，就能解出 A 和 φ。线性方程的特解唯一，所以这就是稳态解。</p>
+      <div class="memo"><b>结论</b><span>正弦激励下，线性电路的稳态响应仍是同频正弦；频率已知，只剩幅值和相位两个未知量。</span></div>
+      <p>这就是相量法能成立的根本原因：我们不需要求整个时间函数，只需要求两个数——幅值 A 和相位 φ。</p>
+
+      <h3>二、把正弦装进复指数：相量的定义</h3>
+      <p>直接比较 cos 和 sin 的系数很啰嗦。欧拉公式给了一个更省事的容器：</p>
+      <div class="eq">e<sup>jθ</sup> = cos θ + j sin θ</div>
+      <p>于是余弦可以写成复指数的实部：</p>
+      <div class="eq">cos(ωt + θ) = Re{ e<sup>j(ωt+θ)</sup> } = Re{ e<sup>jθ</sup> e<sup>jωt</sup> }</div>
+      <p>把与时间无关的部分单独拎出来，定义<b>相量</b>：</p>
+      <div class="eq">V = V<sub>m</sub> e<sup>jθ</sup><br>v(t) = Re{ V e<sup>jωt</sup> }</div>
+      <p>V 是一个复数：模是幅值 V<sub>m</sub>，辐角是初相 θ。它不是新的物理量，只是“幅值 + 相位”的打包写法。相量图里画成箭头，长度表示幅值，角度表示相位。</p>
+      <p><b>相位差</b>定义为 φ = θ<sub>v</sub> − θ<sub>i</sub>。φ &gt; 0 说电压超前电流，φ &lt; 0 说电压滞后电流；相量图上就是两个箭头的夹角。阻抗角正是这个 φ。</p>
+      <div class="note"><b>约定：</b>本节用<b>余弦</b>作参考，相量取<b>峰值</b>。功率计算常改用有效值相量，模会除以 √2；只要前后一致，结果不变。</div>
+
+      <div class="deriv">
+        <h4>推导 · 为什么求导只乘 jω</h4>
+        <div class="step"><b>①</b><span>把 v(t) 写成复指数的实部：v(t) = Re{V e<sup>jωt</sup>}。</span></div>
+        <div class="step"><b>②</b><span>对时间求导。V 是常数，只有 e<sup>jωt</sup> 随时间变：</span></div>
+        <div class="eq">d/dt (V e<sup>jωt</sup>) = V · jω e<sup>jωt</sup> = jω · V e<sup>jωt</sup></div>
+        <div class="step"><b>③</b><span>取实部与求导可交换（线性运算），所以：</span></div>
+        <div class="eq">dv/dt = Re{ jωV e<sup>jωt</sup> }</div>
+        <div class="step"><b>④</b><span>括号里的 jωV 就是“导数对应的相量”。于是时域求导 ↔ 相量乘 jω。</span></div>
+        <p class="deriv-end">同理，积分对应除以 jω。微分方程里的 d/dt 全部变成乘 jω，微分方程就变成了复数代数方程。</p>
+      </div>
+
+      <p>把这条性质与线性性结合起来，就得到相量法的三条基本规则：</p>
+      <table>
+        <thead><tr><th>时域</th><th>相量域</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>a·v(t)</td><td>a·V</td><td>线性</td></tr>
+          <tr><td>v₁(t) + v₂(t)</td><td>V₁ + V₂</td><td>线性</td></tr>
+          <tr><td>dv/dt</td><td>jωV</td><td>复指数求导</td></tr>
+          <tr><td>∫v dt</td><td>V/(jω)</td><td>复指数积分</td></tr>
+        </tbody>
+      </table>
+
+      <h3>三、阻抗：把 R、L、C 都变成复数</h3>
+      <p>定义阻抗为相量电压与相量电流之比：</p>
+      <div class="eq">Z = V / I</div>
+      <p>它是复数，模是电压电流幅值之比，辐角是电压超前电流的相位。三个元件分别推一遍：</p>
+
+      <div class="deriv">
+        <h4>推导 · 电阻</h4>
+        <div class="step"><b>①</b><span>时域欧姆定律：v = R i。</span></div>
+        <div class="step"><b>②</b><span>两边取相量：V = R I。</span></div>
+        <div class="eq">Z<sub>R</sub> = V/I = R</div>
+        <div class="step"><b>③</b><span>R 是正实数，所以电压与电流同相，阻抗角为 0。</span></div>
+      </div>
+
+      <div class="deriv">
+        <h4>推导 · 电感</h4>
+        <div class="step"><b>①</b><span>时域：v = L di/dt。</span></div>
+        <div class="step"><b>②</b><span>相量域：求导乘 jω，所以 V = L · jωI。</span></div>
+        <div class="eq">Z<sub>L</sub> = V/I = jωL</div>
+        <div class="step"><b>③</b><span>j 表示 +90°，所以电压超前电流 90°；模为 ωL，频率越高，感抗越大。</span></div>
+      </div>
+
+      <div class="deriv">
+        <h4>推导 · 电容</h4>
+        <div class="step"><b>①</b><span>时域：i = C dv/dt。</span></div>
+        <div class="step"><b>②</b><span>相量域：I = C · jωV = jωC V。</span></div>
+        <div class="step"><b>③</b><span>两边除以 jωC：</span></div>
+        <div class="eq">V = I/(jωC)　⇒　Z<sub>C</sub> = 1/(jωC) = −j/(ωC)</div>
+        <div class="step"><b>④</b><span>−j 表示 −90°，所以电压滞后电流 90°；模为 1/(ωC)，频率越高，容抗越小。</span></div>
+      </div>
+
+      <table>
+        <thead><tr><th>元件</th><th>阻抗 Z</th><th>模</th><th>相位</th></tr></thead>
+        <tbody>
+          <tr><td>电阻</td><td>R</td><td>R</td><td>0°</td></tr>
+          <tr><td>电感</td><td>jωL</td><td>ωL</td><td>+90°（电压超前）</td></tr>
+          <tr><td>电容</td><td>1/(jωC)</td><td>1/(ωC)</td><td>−90°（电压滞后）</td></tr>
+        </tbody>
+      </table>
+      <p>阻抗的倒数叫<b>导纳</b> Y = 1/Z。串联用阻抗相加，并联用导纳相加；这和电阻串并联完全同构，只是运算变成复数。</p>
+
+      
+<div class="deep">
+  <h3>补一层：导纳与相量图</h3>
+  <div class="deep-grid">
+    <div>
+      <p>阻抗的倒数是<b>导纳</b>：</p>
+      <div class="eq">Y = 1/Z = G + jB</div>
+      <p>其中 G 是电导、B 是电纳。注意：有电抗时，G 不等于 1/R，B 也不等于 1/X，必须用复数除法：</p>
+      <div class="eq">Z = R + jX<br>G = R/(R² + X²)<br>B = −X/(R² + X²)</div>
+      <p>例：Z = 3 + j4 Ω，则 Y = (3 − j4)/25 = 0.12 − j0.16 S。串联用 Z 相加，并联用 Y 相加；这和电阻串并联完全同构。</p>
+    </div>
+    <div>
+      <p><b>相量图</b>一般选电流为参考相量，把它画在 0°：</p>
+      <ul>
+        <li>电阻电压 V<sub>R</sub> 与 I 同相；</li>
+        <li>电感电压 V<sub>L</sub> 超前 I 90°；</li>
+        <li>电容电压 V<sub>C</sub> 滞后 I 90°；</li>
+        <li>KVL 变成“首尾相接的矢量加法”。</li>
+      </ul>
+      <p>串联 RLC 中，V<sub>L</sub> 与 V<sub>C</sub> 方向相反，谁大谁决定电路呈感性还是容性：</p>
+      <div class="eq">V<sub>L</sub> &gt; V<sub>C</sub> → 感性<br>V<sub>L</sub> &lt; V<sub>C</sub> → 容性<br>V<sub>L</sub> = V<sub>C</sub> → 谐振</div>
+      <p>相量图不是“装饰”，它能直接看出相位差、幅值关系和谁超前谁。</p>
+    </div>
+  </div>
+</div>
+
+
+      <h3>四、相量形式的电路定律：把直流配方整套搬过来</h3>
+      <p>KCL 和 KVL 是线性约束，对复指数取实部不改变等式，所以：</p>
+      <div class="eq">Σ I<sub>k</sub> = 0　（KCL）<br>Σ V<sub>k</sub> = 0　（KVL）</div>
+      <p>欧姆定律变成 V = ZI；串联、并联、分压、分流、节点法、网孔法、戴维南、叠加，全部保持原来的形式，只要把 R 换成 Z、把实数换成复数。这就是相量法最省事的地方：<b>不用重新学一套电路分析。</b></p>
+
+      <div class="split">
+        <div>
+          <h3 style="margin-top:0">例题：RL 串联</h3>
+          <p>设 R = 3 Ω，ωL = 4 Ω，电压相量 V = 10∠0° V。求电流和各元件电压。</p>
+          <p><b>思路：</b>先求总阻抗，再欧姆定律，最后用分压或 V=ZI 求各段。</p>
+          <div class="eq">Z = R + jωL = 3 + j4 = 5∠53.13° Ω<br>I = V/Z = 10∠0° / 5∠53.13° = 2∠−53.13° A</div>
+          <p>电阻电压与电流同相：</p>
+          <div class="eq">V<sub>R</sub> = R I = 6∠−53.13° V</div>
+          <p>电感电压超前电流 90°：</p>
+          <div class="eq">V<sub>L</sub> = jωL · I = 8∠36.87° V</div>
+          <p>检查 KVL：</p>
+          <div class="eq">V<sub>R</sub> + V<sub>L</sub> = 6∠−53.13° + 8∠36.87° = 10∠0° = V</div>
+          <p>回到时域（ω 已知）：</p>
+          <div class="eq">i(t) = 2 cos(ωt − 53.13°) A<br>v<sub>R</sub>(t) = 6 cos(ωt − 53.13°) V<br>v<sub>L</sub>(t) = 8 cos(ωt + 36.87°) V</div>
+        </div>
+        <figure class="figure">
+          <img class="figimg" src="assets/fig/plot_phasor.png" alt="RL 串联相量图" loading="lazy">
+          <figcaption>相量首尾相接：V<sub>R</sub> 与 I 同相，V<sub>L</sub> 超前 90°，两者合成 V</figcaption>
+        </figure>
+      </div>
+
+      <div class="note"><b>几何直觉：</b>V<sub>R</sub>、V<sub>L</sub> 是直角三角形的两条直角边，V 是斜边。所以 |V|² = |V<sub>R</sub>|² + |V<sub>L</sub>|²，相位角 tan φ = ωL/R。复数运算只是把勾股定理和角度合成了一次。</div>
+
+      <h3>五、节点法、网孔法与戴维南：配方不变，数变复数</h3>
+      <p>节点法：对每个节点写 KCL，支路电流用 (V<sub>i</sub> − V<sub>j</sub>)/Z 表示，得到复数矩阵 G·V = I。网孔法：对每个网孔写 KVL，得到 Z·I = V。戴维南：开路电压 V<sub>oc</sub>、等效阻抗 Z<sub>eq</sub>，负载电流 I = V<sub>oc</sub>/(Z<sub>eq</sub> + Z<sub>L</sub>)。</p>
+      <p>需要注意的只有两件事：第一，Z 依赖频率 ω，换频率就要重算；第二，含受控源时矩阵不再对称，但解法不变。</p>
+
+      <h3>六、谐振与 Q：虚部抵消之后</h3>
+      <p>串联 RLC 的阻抗是：</p>
+      <div class="eq">Z = R + j(ωL − 1/(ωC))</div>
+      <p>当感抗与容抗相等时，虚部为零：</p>
+      <div class="eq">ω<sub>0</sub>L = 1/(ω<sub>0</sub>C)　⇒　ω<sub>0</sub> = 1/√(LC)</div>
+      <p>此时 Z = R，电流最大；L 和 C 的电压大小相等、方向相反，互相抵消，但各自可能远大于源电压。这就是串联谐振的“电压放大”。</p>
+      <p>把阻抗写成归一化形式，能看清 Q 的作用：</p>
+      <div class="eq">Z/R = 1 + jQ(ω/ω<sub>0</sub> − ω<sub>0</sub>/ω)<br>Q = ω<sub>0</sub>L/R = 1/(ω<sub>0</sub>CR)</div>
+
+      <div class="deriv">
+        <h4>推导 · 带宽为什么是 ω₀/Q</h4>
+        <div class="step"><b>①</b><span>半功率点定义为 |Z|/R = √2（阻抗模升到最小值的 √2 倍，功率减半）。</span></div>
+        <div class="step"><b>②</b><span>由归一化式：|Z|/R = √(1 + Q²(ω/ω₀ − ω₀/ω)²)。令它等于 √2，得到：</span></div>
+        <div class="eq">Q(ω/ω<sub>0</sub> − ω<sub>0</sub>/ω) = ±1</div>
+        <div class="step"><b>③</b><span>令 x = ω/ω₀，整理成二次方程：</span></div>
+        <div class="eq">Qx² ∓ x − Q = 0</div>
+        <div class="step"><b>④</b><span>两个正根就是上下半功率频率，二者之差为：</span></div>
+        <div class="eq">B = ω<sub>2</sub> − ω<sub>1</sub> = ω<sub>0</sub>/Q</div>
+        <p class="deriv-end">Q 越高，带宽越窄，选择性越好；但储能元件的建立时间也越长，这就是“选得准”和“变得快”的取舍。</p>
+      </div>
+
+      <div class="deep">
+        <h3>再深入一点：Q 的物理意义与并联谐振</h3>
+        <div class="deep-grid">
+          <div>
+            <p>Q 不只出现在公式里。它的定义是：</p>
+            <div class="eq">Q = 2π × (每周期储存的能量) / (每周期损耗的能量)</div>
+            <p>串联时，电流相同，能量在 L、C 之间来回倒；R 每个周期拿走一部分，所以 Q = ω<sub>0</sub>L/R。Q 高，意味着“存得多、耗得少”，振铃更久。</p>
+            <p>并联谐振是对偶的：端电压相同，L、C 支路电流等幅反相，总电流最小。用导纳写：</p>
+            <div class="eq">Y = G + j(ωC − 1/(ωL))<br>ω<sub>0</sub> = 1/√(LC)<br>Q = R/(ω<sub>0</sub>L) = ω<sub>0</sub>CR</div>
+            <p>串联看阻抗最小，并联看导纳最小；一个“电流最大”，一个“端电压最大”。</p>
+          </div>
+          <figure class="figure">
+            <img class="figimg" src="assets/fig/plot_resonance.png" alt="不同 Q 值的谐振曲线" loading="lazy">
+            <figcaption>Q 越高，峰越尖、带宽越窄；代价是建立更慢、振铃更久</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <h3>七、从相量到功率、再到频响</h3>
+      <p>相量法解决的是“同一个频率下的幅值和相位”。下一节功率会用到它：把电压相量乘以电流的<b>共轭</b>，就得到复功率 S = V I* = P + jQ。再往后，频率响应把 ω 当作变量扫过去，Z(jω) 就变成了网络函数 H(jω)。</p>
+      <p>所以这条线是连贯的：</p>
+      <div class="eq">微分方程 → 正弦稳态 → 相量 → 阻抗 → 复数电路方程 → 功率 → 频响</div>
+
+      <div class="pitfall"><b>别踩坑：</b>一张相量图只能对应一个频率；不同频率的源要各自算、各自变回时间函数，再叠加；正弦必须先化成余弦再取相量；峰值相量与有效值相量不能混用；阻抗是复数，不是“电阻加电抗”的实数。</div>
+
+      <div class="app">
+        <div class="ico">🎚️</div>
+        <div><h4>现实里：收音机调台</h4>
+        <p>旋转调台旋钮，其实是在改变电容值，让 LC 的谐振频率对准某个电台。电台频率不同，LC 对其他频率“不感兴趣”，这就是选择性的来源；而 Q 越高，选台越尖，但音质和建立时间也会受影响。</p></div>
+      </div>
+
+      <div class="memo"><b>一句话记住</b><span>正弦装进复指数，求导就乘 jω；电路定律照搬，实数换复数。</span></div>
+      <div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：复数、正弦、二阶暂态</span><span class="t-arrow">→</span><span class="t-now">本节：相量 + 阻抗</span><span class="t-arrow">→</span><span class="t-down">下游：功率、频率响应、滤波器</span></div>
+    </section>
+
+    <!-- 11 -->
+    <section class="chapter" id="power">
+      <div class="chapter-head">
+        <div class="chapter-num">11</div>
+        <div><h2>交流功率：有功、无功与功率因数</h2><div class="tag">谁在真正干活</div></div>
+      </div>
+      <p class="lead">正弦电压电流的瞬时功率一直在脉动。一个周期平均下来，只有电阻真正消耗功率；电感和电容只是把能量“借走再还回来”。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 功率三角形</h3>
+          <p class="hint">视在功率固定 1000 VA。拖动功率因数，看有功和无功怎么此消彼长。</p>
+          <canvas id="powerCanvas" style="aspect-ratio:2/1.25"></canvas>
+          <div class="controls">
+            <div class="control"><label for="pf">功率因数</label><input id="pf" type="range" min="0.1" max="1" step="0.01" value="0.5"><output id="pfOut">0.50</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">有功 P <b id="pOut">500 W</b></span>
+            <span class="chip">无功 Q <b id="qOut">866 var</b></span>
+            <span class="chip">φ <b id="phiPOut">60°</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">三个功率</h3>
+          <ul>
+            <li><b>有功 P</b>：真正被消耗的，单位 W。</li>
+            <li><b>无功 Q</b>：在 L、C 之间来回跑的，单位 var。</li>
+            <li><b>视在 S</b>：电压有效值乘电流有效值，单位 VA，是设备的“容量占用”。</li>
+          </ul>
+          <p>功率因数是电压与电流相位差的余弦。功率因数低，线路电流就大，设备和导线都要加粗，所以电力公司要罚款。</p>
+          <p><b>校正：</b>在感性负载旁并联电容，用容性无功抵消感性无功，功率因数就上去了，线路电流反而变小。</p>
+          <div class="eq">P = V<sub>rms</sub> I<sub>rms</sub> cos φ<br>S = P + jQ</div>
+        </div>
+      </div>
+
+      <div class="pitfall"><b>别踩坑：</b>视在功率不是有功功率；无功不是“没用的功率”，它只是不消耗，但会占线路容量；共轭匹配才是最大有功，不是“负载等于内阻”那么简单。</div>
+    
+<div class="deep">
+  <h3>再深入一点：瞬时功率、无功与复功率</h3>
+  <div class="deep-grid">
+    <div>
+      <p>设 v = V<sub>m</sub>cos(ωt)，i = I<sub>m</sub>cos(ωt − φ)，瞬时功率可以拆成两块：一块是不随时间变的平均功率，一块是以 2ω 频率脉动的部分。</p>
+      <p>平均功率 P = V<sub>rms</sub>I<sub>rms</sub>cosφ；无功功率 Q = V<sub>rms</sub>I<sub>rms</sub>sinφ；视在功率 S = V<sub>rms</sub>I<sub>rms</sub>。三者满足 S² = P² + Q²，画出来就是功率三角形。</p>
+      <p>无功不是“白干的活”，它在电感、电容之间来回搬运，不消耗但有占线路容量。并联电容做功率因数校正，就是把感性无功抵消掉，让线路电流降下来。</p>
+      <div class="eq">p(t) = P + P cos2ωt + Q sin2ωt<br>P = VIcosφ<br>Q = VIsinφ<br>S = P + jQ</div>
+    </div>
+    <figure class="figure">
+      <img class="figimg" src="assets/fig/plot_power.png" alt="瞬时功率波形" loading="lazy">
+      <figcaption>瞬时功率会“回落”，但平均值由有功决定</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：功率因数校正与共轭匹配</h3>
+  <ul>
+    <li>感性负载的电流滞后电压，功率因数低；在负载端并联电容，用容性无功去抵消感性无功，总电流会下降。</li>
+    <li>不要“过补偿”：电容太大，电流又会从滞后变超前，线路电流反而回升。</li>
+    <li>源有内阻抗时，负载取内阻抗的<b>共轭</b>，拿到的有功最大；只让电阻相等、电抗不抵消，是拿不到最大功率的。</li>
+  </ul>
+  <p>功率因数校正省的是“线路容量”，不是“负载消耗的有功”。电费里的有功部分不会因为并联电容而减少。</p>
+</div>
+    
+      
+<div class="deep">
+  <h3>推导：瞬时功率怎么拆成“平均 + 2ω 脉动”</h3>
+  <p>设 v = V<sub>m</sub>cos(ωt)，i = I<sub>m</sub>cos(ωt − φ)。用积化和差：</p>
+  <div class="eq">p = vi = (V<sub>m</sub>I<sub>m</sub>/2)[cosφ + cos(2ωt − φ)]</div>
+  <p>再把 cos(2ωt − φ) 展开，并令 V、I 为有效值：</p>
+  <div class="eq">p = P + Pcos2ωt + Qsin2ωt<br>P = VIcosφ，Q = VIsinφ</div>
+  <p>前两项是平均功率和以 2ω 脉动、平均为零的分量；第三项是“来回搬运”的无功分量。电流滞后时 Q &gt; 0，波形在平均线上下不再对称。</p>
+</div>
+
+    
+<div class="deep">
+  <h3>再深入一点：复功率与最大功率传输</h3>
+  <div class="deep-grid">
+    <div>
+      <p>用有效值相量定义<b>复功率</b>：</p>
+      <div class="eq">S = V I* = P + jQ<br>P = Re{S} = VIcosφ<br>Q = Im{S} = VIsinφ</div>
+      <p>其中 I* 是电流的共轭。只有电阻消耗有功；电感、电容的无功会来回搬运，不消耗，但占用线路容量。</p>
+      <p>负载从有内阻抗的源拿最大有功，条件是<b>共轭匹配</b>：</p>
+      <div class="eq">Z<sub>L</sub> = Z<sub>s</sub>*<br>R<sub>L</sub> = R<sub>s</sub>，X<sub>L</sub> = −X<sub>s</sub><br>P<sub>max</sub> = |V<sub>oc</sub>|²/(4R<sub>s</sub>)</div>
+      <p>只让电阻相等、电抗不抵消，拿不到最大功率；只让模相等，也不对。</p>
+    </div>
+    <div>
+      <p>共轭匹配时，源内阻和负载电阻各消耗一半有功，所以效率只有 50%。这不是“最省电”的匹配，而是“负载拿到最多有功”的匹配。</p>
+      <p>电力系统追求的是高效率，不会故意让线路阻抗等于负载；只有小信号、通信、音频等“要最大功率”的场合才做共轭匹配。</p>
+      <div class="eq">η = P<sub>L</sub>/(P<sub>L</sub> + P<sub>s</sub>)<br>共轭匹配时 η = 50%</div>
+      <p>如果负载电抗不可调，只能调电阻，最大功率条件会变成 R<sub>L</sub> = |Z<sub>s</sub>|，而不是 R<sub>s</sub>。</p>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="ico">🏭</div>
+  <div><h4>现实里：工厂的无功补偿柜</h4>
+  <p>工厂里大量电机是感性负载，功率因数低，线路电流大、电费高。并联电容柜把无功“就地补掉”，线路电流降下来，同样的有功可以用更细的线送——这就是功率因数校正。</p></div>
+</div>
+    
+      
+<figure class="photo"><img src="assets/photos/pylons.jpg" alt="高压输电线路：升压降低线路损耗，是变压器最宏大的应用。" loading="lazy"><figcaption>高压输电线路：升压降低线路损耗，是变压器最宏大的应用。 <a href="https://commons.wikimedia.org/wiki/File:Transmission_towers_at_sunset_in_East_Texas.jpg" target="_blank" rel="noopener">图源：Matthew T Rader / CC BY-SA 4.0</a></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>有功干活，无功往返，视在占容量。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：相量</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：匹配与校正</span></div>
+    </section>
+
+    <!-- 12 -->
+    <section class="chapter" id="frequency">
+      <div class="chapter-head">
+        <div class="chapter-num">12</div>
+        <div><h2>频率响应与滤波：电路对不同频率的态度</h2><div class="tag">扫频 · Bode · 谐振</div></div>
+      </div>
+      <p class="lead">固定电路，改变输入正弦的频率，看输出幅度和相位怎么变——这就是频率响应。滤波器就是一只“筛子”。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 一阶低通的 Bode 图</h3>
+          <p class="hint">拖动截止频率。注意转折点之后，曲线每十倍频下降 20 dB。</p>
+          <canvas id="bodeCanvas" style="aspect-ratio:2/1.2"></canvas>
+          <div class="controls">
+            <div class="control"><label for="fc">截止频率</label><input id="fc" type="range" min="1" max="10000" step="1" value="1000"><output id="fcOut">1.0 kHz</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">10 倍频处 <b id="bodeAt">−20 dB</b></span>
+            <span class="chip">转折点 <b id="bodeKnee">−3 dB</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">四种筛子</h3>
+          <ul>
+            <li><b>低通</b>：低频过，高频挡。</li>
+            <li><b>高通</b>：高频过，低频挡。</li>
+            <li><b>带通</b>：只放行中间一段。</li>
+            <li><b>带阻</b>：只挡掉中间一段（陷波）。</li>
+          </ul>
+          <p>谐振电路的带宽是“增益不低于 0.707 倍”的频率范围。带宽等于谐振频率除以 Q：Q 越高，带宽越窄，选择性越好，但建立越慢、越容易振铃。</p>
+          <p><b>Bode 图</b>把增益取对数、频率也取对数：串联环节的增益相乘，变成相加；每个极点、零点在转折频率处改变一次斜率。</p>
+          <div class="eq">A<sub>dB</sub> = 20 log<sub>10</sub> |H|</div>
+        </div>
+      </div>
+
+      <div class="pitfall"><b>别踩坑：</b>分贝是 20log（电压比），不是 10log；0 dB 表示“幅度不变”，不是“没有输出”；截止频率处是 −3 dB，不是 0 dB。</div>
+    
+<div class="deep">
+  <h3>再深入一点：四种滤波器与 Bode 渐近线</h3>
+  <div class="deep-grid">
+    <div>
+      <p>频率响应 H(jω) 同时给出两件事：幅度怎么变（增益）、相位怎么移。把增益取 20log，频率取对数，就得到 Bode 图；每个极点在高频段贡献 −20 dB/十倍频，每个零点贡献 +20 dB/十倍频。</p>
+      <p>一阶低通的转折点在 ω<sub>c</sub> = 1/RC，转折点本身是 −3 dB；一阶高通正好相反。带通只放行中间一段，带阻只挡掉中间一段。谐振电路的带宽 B = ω<sub>0</sub>/Q，Q 越高越“挑食”。</p>
+      <p>有源滤波用运放加 RC，避开电感；但运放有增益带宽积 GBW 的限制：闭环增益越大，可用带宽越窄。</p>
+      <div class="eq">A<sub>dB</sub> = 20log|H|<br>一阶低通：−20 dB/dec<br>B = ω<sub>0</sub>/Q<br>GBW = A<sub>0</sub>ω<sub>a</sub></div>
+    </div>
+    <figure class="figure">
+      <img class="figimg" src="assets/fig/plot_filters.png" alt="四种滤波器幅频特性" loading="lazy">
+      <figcaption>四种“筛子”：低通、高通、带通、带阻</figcaption>
+    </figure>
+  </div>
+</div>
+    
+      
+<div class="deep">
+  <h3>推导：一阶低通的 H(jω)、截止频率与 −20 dB/dec</h3>
+  <p><b>思路：</b>把电容换成阻抗，用分压公式；再把结果写成“模 + 相位”。</p>
+  <div class="eq">H(jω) = V<sub>out</sub>/V<sub>in</sub> = Z<sub>C</sub>/(R + Z<sub>C</sub>)<br>Z<sub>C</sub> = 1/(jωC)</div>
+  <p>代入并上下同乘 jωC：</p>
+  <div class="eq">H(jω) = 1/(1 + jωRC)</div>
+  <p>令 ω<sub>c</sub> = 1/(RC)，则：</p>
+  <div class="eq">H(jω) = 1/(1 + jω/ω<sub>c</sub>)<br>|H| = 1/√(1 + (ω/ω<sub>c</sub>)²)<br>φ = −arctan(ω/ω<sub>c</sub>)</div>
+  <p>当 ω = ω<sub>c</sub> 时 |H| = 1/√2 ≈ 0.707，所以叫 −3 dB 点；当 ω ≫ ω<sub>c</sub> 时 |H| ≈ ω<sub>c</sub>/ω，频率乘 10，幅度除以 10，即 −20 dB/dec。</p>
+  <p>这就是 Bode 图斜率的来源：一个极点贡献 −20 dB/dec，一个零点贡献 +20 dB/dec。</p>
+</div>
+
+    
+<div class="deep">
+  <h3>再深入一点：网络函数与串、并联谐振</h3>
+  <div class="deep-grid">
+    <div>
+      <p><b>网络函数</b>是响应相量与激励相量之比：</p>
+      <div class="eq">H(jω) = 响应相量 / 激励相量</div>
+      <p>按响应、激励是电压还是电流，分为四类：电压增益、电流增益、转移阻抗、转移导纳。分母中 jω 的最高次数就是网络阶数；分母的根是极点，分子的根是零点。</p>
+      <ul>
+        <li><b>策动点</b>：同一端口，输入阻抗或输入导纳。</li>
+        <li><b>转移函数</b>：跨端口，电压/电流增益或转移阻抗/导纳。</li>
+        <li><b>极点</b>：让 H→∞ 的 s 值，决定稳定与响应形状。</li>
+        <li><b>零点</b>：让 H=0 的 s 值，只改比例与波形。</li>
+      </ul>
+      <p>串联 RLC 的阻抗：</p>
+      <div class="eq">Z = R + j(ωL − 1/(ωC))<br>ω<sub>0</sub> = 1/√(LC)<br>Q = ω<sub>0</sub>L/R</div>
+      <p>谐振时 Z=R，电流最大；L、C 电压大小相等、方向相反，各自是源电压的 Q 倍。带宽 B=ω<sub>0</sub>/Q。</p>
+    </div>
+    <div>
+      <p><b>并联谐振</b>是对偶的：端电压相同，L、C 支路电流等幅反相，总电流最小。</p>
+      <div class="eq">Y = G + j(ωC − 1/(ωL))<br>ω<sub>0</sub> = 1/√(LC)<br>Q = R/(ω<sub>0</sub>L) = ω<sub>0</sub>CR</div>
+      <p>并联谐振时导纳最小、端电压最大；L、C 支路电流是总电流的 Q 倍。串联看“电压放大”，并联看“电流放大”。</p>
+      <p>Bode 图把增益取 20log、频率取对数：一个极点贡献 −20 dB/dec，一个零点贡献 +20 dB/dec；转折频率处是 −3 dB。</p>
+      <div class="eq">A<sub>dB</sub> = 20log|H(jω)|<br>一阶低通：ω<sub>c</sub> = 1/(RC)<br>B = ω<sub>0</sub>/Q</div>
+      <p>滤波器的“陡不陡”由阶数决定：一阶 −20 dB/dec，二阶 −40 dB/dec；但阶数越高，相位滞后越大，也越容易振铃。</p>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="ico">🎧</div>
+  <div><h4>现实里：耳机的分频与降噪</h4>
+  <p>入耳式耳机常用 RC/LC 分频，把低频送大喇叭、高频送小喇叭。降噪耳机则用麦克风采噪声，反相后叠加，把低频噪声“抵消”——本质是一个频率选择性系统。</p></div>
+</div>
+    
+      
+<figure class="photo"><img src="assets/photos/scope.jpg" alt="示波器：把电压波形画在屏幕上，频率、相位、幅值一目了然。" loading="lazy"><figcaption>示波器：把电压波形画在屏幕上，频率、相位、幅值一目了然。 <a href="https://commons.wikimedia.org/wiki/File:Tektronix_Oscilloscope_475A.jpg" target="_blank" rel="noopener">图源：Pittigrilli / CC BY-SA 4.0</a></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>滤波就是筛频率；Bode 把乘法变加法。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：相量</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：拉氏与傅里叶</span></div>
+    </section>
+
+    <!-- 13 -->
+    <section class="chapter" id="laplace">
+      <div class="chapter-head">
+        <div class="chapter-num">13</div>
+        <div><h2>拉普拉斯：把微积分变成代数</h2><div class="tag">s 域 · 系统函数 · 极点</div></div>
+      </div>
+      <p class="lead">微分方程难解，是因为有导数。拉普拉斯变换把时间函数变成复频率 s 的函数：微分变成乘 s，积分变成除 s，方程立刻变成代数方程。</p>
+
+      <div class="split">
+        <div class="figure">
+          <img class="figimg" src="assets/fig/plot_splane.png" alt="s 平面上的极点与稳定区域" loading="lazy">
+          <figcaption>极点住在左半平面，电路就稳定；跑到右半平面，响应会发散</figcaption>
+        </div>
+        <div>
+          <h3 style="margin-top:0">电路在 s 域长什么样</h3>
+          <ul>
+            <li>电阻：还是 R。</li>
+            <li>电感：变成 sL，初始电流变成附加源。</li>
+            <li>电容：变成 1/(sC)，初始电压变成附加源。</li>
+          </ul>
+          <p>于是节点法、网孔法、戴维南全部照搬，只是把阻抗写成 s 的函数，初始条件写成电源。</p>
+          <p><b>四步：</b>画 s 域模型 → 列方程解出响应 → 部分分式展开 → 查表变回时间函数。</p>
+          <div class="eq">V<sub>C</sub>(s) = V<sub>0</sub> / [s(1 + sRC)] → v<sub>C</sub>(t) = V<sub>0</sub>(1 − e<sup>−t/RC</sup>)</div>
+        </div>
+      </div>
+
+      <p><b>系统函数</b>是零初始条件下输出与输入的 s 域比值，相当于电路的“身份证”：极点定稳定与快慢，零点改波形形状，冲激响应就是它的反变换。</p>
+
+      <div class="pitfall"><b>别踩坑：</b>初始条件源的极性容易画反；s 域解只在接通以后有效，别拿它去解释接通前的行为。</div>
+    
+<div class="deep">
+  <h3>再深入一点：s 域模型与初始条件</h3>
+  <div class="deep-grid">
+    <div>
+      <p>拉普拉斯变换把微分变成乘 s、积分变成除 s。对单边信号，微分性质还要减去初始值：<span class="tex-inline" data-tex="\mathcal{L}\left\{\frac{dx}{dt}\right\}=sX(s)-x(0^-)">L{dx/dt} = sX(s) − x(0⁻)</span>。</p>
+      <p>于是电容不再是单纯的 1/(sC)，还要串一个 v(0⁻)/s 的电压源；电感不再是单纯的 sL，还要串一个 L i(0⁻) 的电压源（也可改成并联电流源）。初始条件就这样变成了“附加电源”。</p>
+      <p>零初始条件下，输出与输入的 s 域比值就是系统函数 H(s)。极点全在左半平面则稳定；冲激响应就是 H(s) 的反变换；时域卷积在 s 域变成乘法。</p>
+      <div class="eq" data-tex="\begin{aligned}\mathcal{L}\left\{\frac{dx}{dt}\right\}&=sX-x(0^-)\\ V_C&=\frac{I}{sC}+\frac{v(0^-)}{s}\\ V_L&=sLI-L\,i(0^-)\end{aligned}">L{dx/dt} = sX − x(0⁻)<br>V<sub>C</sub> = I/(sC) + v(0⁻)/s<br>V<sub>L</sub> = sLI − L i(0⁻)</div>
+    </div>
+    <div class="widget">
+  <h3>互动 · 时域 ↔ s 域</h3>
+  <p class="hint">拉普拉斯把微分变成乘法：电容 1/sC、电感 sL，初值变成附加源。</p>
+  <canvas id="sdCanvas" style="aspect-ratio:2/1.05"></canvas>
+  <div class="controls"><button class="btn" id="sdBtn" type="button">切换到 s 域</button></div>
+  <div class="readout">
+    <span class="chip" id="sdMode">时域</span>
+    <span class="chip" id="sdEq">i = C dv/dt</span>
+  </div>
+</div>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：拉氏变换的常用性质</h3>
+  <ul>
+    <li><b>线性</b>：L{ax₁ + bx₂} = aX₁ + bX₂。</li>
+    <li><b>时移</b>：L{x(t − a)u(t − a)} = e<sup>−as</sup>X(s)。</li>
+    <li><b>频移</b>：L{e<sup>−at</sup>x(t)} = X(s + a)。</li>
+    <li><b>尺度</b>：L{x(at)} = (1/a)X(s/a)，a &gt; 0。</li>
+    <li><b>卷积</b>：L{x₁ * x₂} = X₁(s)X₂(s)。</li>
+    <li><b>初值/终值</b>：在极点都稳定的前提下，可由 sX(s) 的极限读出初值和终值。</li>
+  </ul>
+  <p>这些性质把“解微分方程”变成“查表 + 代数”。真正的难点不在变换，而在建模：初始条件有没有画成源、受控源有没有贴住。</p>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · 微分性质为什么是 sX − x(0)</h4>
+  <div class="step"><b>①</b><span>从定义出发，对 x′ 做拉氏变换。</span></div>
+  <div class="eq" data-tex="\mathcal{L}\{x'\}=\int_0^\infty x'(t)e^{-st}\,dt">L{x′} = ∫<sub>0</sub><sup>∞</sup> x′(t) e<sup>−st</sup> dt</div>
+  <div class="step"><b>②</b><span>分部积分：把 e<sup>−st</sup> 当 u、x′dt 当 dv。</span></div>
+  <div class="eq" data-tex="=\left[x(t)e^{-st}\right]_0^\infty+s\int_0^\infty x(t)e^{-st}\,dt">= [x(t)e<sup>−st</sup>]<sub>0</sub><sup>∞</sup> + s∫<sub>0</sub><sup>∞</sup> x(t)e<sup>−st</sup>dt</div>
+  <div class="step"><b>③</b><span>上限项在收敛域内为零，下限项给出 −x(0⁻)。</span></div>
+  <div class="eq" data-tex="\mathcal{L}\{x'\}=sX(s)-x(0^-)">L{x′} = <b>sX(s) − x(0⁻)</b></div>
+  <p class="deriv-end">这就是为什么 s 域模型里会多出“初始条件电源”：不是硬加的，是分部积分掉出来的。</p>
+</div>
+<div class="app">
+  <div class="ico">🚗</div>
+  <div><h4>现实里：控制系统与汽车悬挂</h4>
+  <p>工程师用拉氏变换把“弹簧—质量—阻尼”的微分方程变成代数式，算极点、画根轨迹，判断车会不会抖、刹车会不会点头。你坐的车，悬挂参数就是这么调出来的。</p></div>
+</div>
+    
+      <div class="memo"><b>一句话记住</b><span>微分变乘 s，初始条件变电源。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：微分方程</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：傅里叶与稳定</span></div>
+    </section>
+
+    <!-- 14 -->
+    <section class="chapter" id="fourier">
+      <div class="chapter-head">
+        <div class="chapter-num">14</div>
+        <div><h2>傅里叶：把波形拆成“音叉”</h2><div class="tag">频谱 · 谐波 · 吉布斯</div></div>
+      </div>
+      <p class="lead">任何周期波形，都能拆成许多正弦波之和：一个基波，加上频率是整数倍的高次谐波。拆出来的每一条“谱线”，就是频谱。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 方波的合成</h3>
+          <p class="hint">增加谐波项数。看跳变附近的过冲——加得再多，它也不会消失。</p>
+          <canvas id="fourierCanvas" style="aspect-ratio:2/1.15"></canvas>
+          <div class="controls">
+            <div class="control"><label for="harm">谐波项数</label><input id="harm" type="range" min="1" max="25" step="1" value="5"><output id="harmOut">5 项</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">基波 <b id="fundOut">1 kHz</b></span>
+            <span class="chip">过冲 <b>≈ 9%</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">频谱的两种长相</h3>
+          <ul>
+            <li><b>周期信号</b>：频谱是一根根离散的谱线。</li>
+            <li><b>非周期信号</b>：频谱变成连续的曲线。</li>
+          </ul>
+          <p>方波有跳变，谐波按 1/n 慢慢衰减，所以要很多项才能接近；跳变附近总有约 9% 的过冲，加项只会让它变窄——这就是<b>吉布斯现象</b>。</p>
+          <p><b>负频率</b>不是反向旋转的物理波，而是实信号双边谱的数学对称。只保留正频率就得到解析信号，它的虚部是原信号的希尔伯特变换（全局 90° 移相）。</p>
+          <div class="eq">x(t) = Σ c<sub>n</sub> e<sup>jnω₀t</sup><br>c<sub>n</sub> 按 1/n 衰减（方波）</div>
+        </div>
+      </div>
+
+      <div class="pitfall"><b>别踩坑：</b>频谱冲激前面的 2π 别漏；负频率不是“不存在”，而是共轭对称的另一半；时域压得越窄，频域展得越宽。</div>
+    
+<div class="deep">
+  <h3>再深入一点：频谱、负频率与能量</h3>
+  <div class="deep-grid">
+    <div>
+      <p>傅里叶变换把非周期波形拆成连续的正弦谱，傅里叶级数把周期波形拆成离散的谱线。方波的谐波幅度按 1/n 衰减，所以跳变附近总有过冲（吉布斯现象）。</p>
+      <p>几条好用的性质：时移只改相位，频移把频谱整体搬家（调制），尺度变换让时域与频域“你窄我宽”，时域卷积对应频域相乘。</p>
+      <p>实信号的频谱必须共轭对称，所以正频率旁边总有“负频率”。只保留正频率得到解析信号，它的虚部是原信号的希尔伯特变换（全局 90° 移相）。Parseval 定理说：时域能量等于频域能量。</p>
+      <div class="eq">X(ω) = ∫ x(t)e<sup>−jωt</sup>dt<br>c<sub>n</sub> = (1/T)∫ x(t)e<sup>−jnω₀t</sup>dt<br>∫|x|²dt = (1/2π)∫|X|²dω</div>
+    </div>
+    <figure class="figure">
+      <img class="figimg" src="assets/fig/plot_spectrum.png" alt="方波的离散频谱" loading="lazy">
+      <figcaption>方波的频谱：一根根离散的奇次谐波，包络按 1/n 衰减</figcaption>
+    </figure>
+  </div>
+</div>
+    
+<div class="deep">
+  <h3>补遗：傅里叶变换的常用性质</h3>
+  <ul>
+    <li><b>时移</b>：x(t − a) ↔ e<sup>−jωa</sup>X(ω)。</li>
+    <li><b>频移</b>：e<sup>jω₀t</sup>x(t) ↔ X(ω − ω₀)；乘余弦就是把频谱左右各搬一半。</li>
+    <li><b>尺度</b>：x(at) ↔ (1/|a|)X(ω/a)。时域越窄，频域越宽。</li>
+    <li><b>微分</b>：dx/dt ↔ jωX(ω)；积分要多加一个 kδ(ω)，这个常数最容易被漏。</li>
+    <li><b>对称</b>：X(t) ↔ 2πx(−ω)。</li>
+  </ul>
+  <p>实信号的幅度谱是偶函数、相位谱是奇函数；这不是巧合，而是“负频率必须成对出现”的结果。</p>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · 傅里叶系数为什么那样算</h4>
+  <div class="step"><b>①</b><span>假设周期信号能拆成复指数之和。</span></div>
+  <div class="eq">x(t) = Σ c<sub>n</sub> e<sup>jnω₀t</sup></div>
+  <div class="step"><b>②</b><span>两边乘 e<sup>−jmω₀t</sup>，再在一个周期内积分。</span></div>
+  <div class="eq">∫<sub>T</sub> x(t)e<sup>−jmω₀t</sup>dt = Σ c<sub>n</sub> ∫<sub>T</sub> e<sup>j(n−m)ω₀t</sup>dt</div>
+  <div class="step"><b>③</b><span>右边只有 n = m 的那一项不为零，积分值等于 T。</span></div>
+  <div class="eq">∫<sub>T</sub> x(t)e<sup>−jmω₀t</sup>dt = c<sub>m</sub> T</div>
+  <div class="step"><b>④</b><span>两边除以 T，就得到系数公式。</span></div>
+  <div class="eq">c<sub>m</sub> = (1/T)∫<sub>T</sub> x(t)e<sup>−jmω₀t</sup>dt</div>
+  <p class="deriv-end">“正交性”就是不同频率的复指数在一个周期内“互相抵消”，所以能把系数一个个“筛”出来。</p>
+</div>
+<div class="app">
+  <div class="ico">🎵</div>
+  <div><h4>现实里：音频均衡器与 JPEG</h4>
+  <p>均衡器把音乐拆成多个频段，分别调大调小；JPEG 把图像分成 8×8 小块做频域变换，丢掉人眼不敏感的高频。它们用的都是“换一组基”的思想。</p></div>
+</div>
+    
+      <div class="memo"><b>一句话记住</b><span>波形拆成音叉，频谱就是配方。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：拉普拉斯</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：双口与通信</span></div>
+    </section>
+
+    <!-- 15 -->
+    <section class="chapter" id="twoport">
+      <div class="chapter-head">
+        <div class="chapter-num">15</div>
+        <div><h2>双口与变压器：两个门，一对线圈</h2><div class="tag">端口参数 · 互感 · 阻抗折算</div></div>
+      </div>
+      <p class="lead">双口是一个有两个“门”的黑箱，每个门一进一出。变压器则是两个线圈共享磁场，像一对咬合的齿轮。</p>
+
+      <div class="split">
+        <div class="widget">
+          <h3>互动 · 理想变压器</h3>
+          <p class="hint">一次侧 10 V，二次侧接 8 Ω。拖动匝比，看二次电压和折算到一次侧的阻抗。</p>
+          <canvas id="xfmrCanvas" style="aspect-ratio:2/1.25"></canvas>
+          <div class="controls">
+            <div class="control"><label for="turns">匝比 N</label><input id="turns" type="range" min="0.5" max="4" step="0.1" value="2"><output id="turnsOut">2.0</output></div>
+          </div>
+          <div class="readout">
+            <span class="chip">二次电压 <b id="v2Out">20 V</b></span>
+            <span class="chip">一次侧阻抗 <b id="zinOut">32 Ω</b></span>
+            <span class="chip">二次电流 <b id="i2Out">2.5 A</b></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-top:0">双口的四种“记账法”</h3>
+          <ul>
+            <li><b>z 参数</b>：端口电压写成电流的函数，测时让一个端口开路。</li>
+            <li><b>y 参数</b>：端口电流写成电压的函数，测时让一个端口短路。</li>
+            <li><b>ABCD</b>：输入写成输出的函数，最适合级联。</li>
+            <li><b>h 参数</b>：混合着来，晶体管手册最爱用。</li>
+          </ul>
+          <p>串联 z 相加，并联 y 相加，级联 ABCD 相乘。连接后如果某个端口不再“一进一出”，简单相加就不成立。</p>
+          <p><b>互感</b>：一个线圈的电流变化，会在另一个线圈里感应电压。符号画不出绕向，就用同名端（黑点）标记。</p>
+          <div class="eq">v<sub>2</sub> = N v<sub>1</sub><br>i<sub>2</sub> = −i<sub>1</sub>/N<br>Z<sub>in</sub> = N² Z<sub>L</sub></div>
+        </div>
+      </div>
+
+      <p><b>理想变压器</b>是全耦合、无损耗、电感无穷大的极限：电压比等于匝比，电流比是匝比的倒数，功率一点不丢。它还能变换阻抗：从一次侧看，二次侧负载要乘匝比的平方。</p>
+
+      <div class="example"><b>算一算：</b>匝比 1:2，二次侧接 8 Ω，从一次侧看进去就是 4 × 8 = 32 Ω。利用这一点，可以把负载“折”成源最舒服的阻值，做阻抗匹配。</div>
+
+      <div class="pitfall"><b>别踩坑：</b>同名端看反，互感项符号就错；匝比方向看反，电压电流比全反；把理想变压器当成“直流也能变压”的器件——真实变压器在直流下只是两段导线。</div>
+    
+<div class="deep">
+  <h3>再深入一点：四种参数、T 型等效与变压器</h3>
+  <div class="deep-grid">
+    <div>
+      <p>双口有两个端口，每个端口必须“一进一出”。z 参数把端口电压写成电流的函数（另一端开路测），y 参数反过来（另一端短路测），ABCD 适合级联，h 参数适合晶体管。</p>
+      <p>双口可以等效成 T 型（三个阻抗）或 π 型（三个导纳）。串联时 z 相加，并联时 y 相加，级联时 ABCD 相乘。含独立源的双口多出常数项，可求双口戴维南。</p>
+      <p>互感把两个线圈绑在一起：λ₁ = L₁i₁ + Mi₂，λ₂ = Mi₁ + L₂i₂。同名端标记绕向；耦合系数由互感与自感决定。理想变压器是 k = 1、电感无穷大的极限：电压比等于匝比，电流比是倒数，阻抗按匝比平方折算。</p>
+      <div class="eq">v₂ = N v₁<br>i₂ = −i₁/N<br>Z<sub>in</sub> = N²Z<sub>L</sub><br>k = M/√(L₁L₂)</div>
+    </div>
+    <div class="widget">
+  <h3>互动 · 双口与同名端</h3>
+  <p class="hint">拖动匝比 N，看二次电压、电流和同名端的方向怎么变。</p>
+  <canvas id="portCanvas" style="aspect-ratio:1.5/1"></canvas>
+  <div class="controls">
+    <div class="control"><label for="portN">匝比 N</label><input id="portN" type="range" min="1" max="4" step="0.1" value="2"><output id="portNOut">2.0</output></div>
+  </div>
+  <div class="readout">
+    <span class="chip">v₂ <b id="portV2">20.0 V</b></span>
+    <span class="chip">i₂ <b id="portI2">−1.25 A</b></span>
+  </div>
+</div>
+  </div>
+</div>
+    
+
+<div class="deep">
+  <h3>再深入一点：互感、同名端与耦合电感方程</h3>
+  <div class="deep-grid">
+    <div>
+      <p>两个线圈共享磁场时，一个线圈的电流变化会在另一个线圈里感应电压，这就是<b>互感</b>。设两个线圈的电流都从同名端流入：</p>
+      <div class="eq">ψ<sub>21</sub> = M i<sub>1</sub><br>v<sub>21</sub> = M di<sub>1</sub>/dt<br>v<sub>12</sub> = M di<sub>2</sub>/dt</div>
+      <p>每个线圈的总电压 = 自感电压 + 互感电压：</p>
+      <div class="eq">v<sub>1</sub> = L<sub>1</sub>di<sub>1</sub>/dt + M di<sub>2</sub>/dt<br>v<sub>2</sub> = M di<sub>1</sub>/dt + L<sub>2</sub>di<sub>2</sub>/dt</div>
+      <p>相量形式：</p>
+      <div class="eq">V<sub>1</sub> = jωL<sub>1</sub>I<sub>1</sub> + jωM I<sub>2</sub><br>V<sub>2</sub> = jωM I<sub>1</sub> + jωL<sub>2</sub>I<sub>2</sub></div>
+      <p>如果有一个电流从同名端流出，对应的互感项前面加负号。同名端不是“正极”，它只标记绕向；看反了，互感项的符号就反了。</p>
+    </div>
+    <div>
+      <p><b>耦合系数</b>衡量两个线圈“咬合”得多紧：</p>
+      <div class="eq">k = M/√(L<sub>1</sub>L<sub>2</sub>)，0 ≤ k ≤ 1</div>
+      <p>k = 0 无耦合，k = 1 全耦合。理想变压器是 k = 1 且 L → ∞ 的极限。</p>
+      <p>同名端在同一侧时，耦合电感可以等效成 T 型：两个串联臂 L<sub>1</sub>−M、L<sub>2</sub>−M，中间并联臂 M。这样就把“磁耦合”变成了三个普通电感。</p>
+      <div class="eq">T 型：L<sub>1</sub>−M，L<sub>2</sub>−M，M</div>
+      <p>储能：</p>
+      <div class="eq">w = ½L<sub>1</sub>i<sub>1</sub>² + ½L<sub>2</sub>i<sub>2</sub>² + M i<sub>1</sub>i<sub>2</sub></div>
+      <p>互感本身不耗能，但会改变能量在两个线圈之间的分配；耦合过强或方向不对，可能让等效电感出现负值。</p>
+    </div>
+  </div>
+</div>
+
+<div class="deep">
+  <h3>补遗：ABCD、h 参数与互联条件</h3>
+  <ul>
+    <li><b>ABCD</b>：[V₁; I₁] = [A B; C D][V₂; −I₂]。级联时矩阵直接相乘；互易双口满足 AD − BC = 1。</li>
+    <li><b>h 参数</b>：V₁ = h₁₁I₁ + h₁₂V₂，I₂ = h₂₁I₁ + h₂₂V₂。晶体管手册里的 h<sub>fe</sub>、h<sub>ie</sub> 就是它。</li>
+    <li><b>互联</b>：串联 z 相加、并联 y 相加、级联 ABCD 相乘——前提是互联后每个端口仍然“一进一出”。</li>
+    <li><b>T 型/π 型</b>：z 参数对应 T 型（两个串联臂 + 一个并联臂），y 参数对应 π 型（三个导纳）。</li>
+  </ul>
+  <p>双口理论的价值在于“模块化”：把放大器、滤波器、反馈网络各看成一个双口，先分别测参数，再按连接方式组合。</p>
+</div>
+    
+      <div class="deriv">
+  <h4>推导 · 变压器为什么能把阻抗“放大 N² 倍”</h4>
+  <div class="step"><b>①</b><span>理想变压器：电压比等于匝比，电流比是倒数。</span></div>
+  <div class="eq">v₂ = N v₁　　i₂ = − i₁/N</div>
+  <div class="step"><b>②</b><span>二次侧接负载 Z<sub>L</sub>，有 v₂ = Z<sub>L</sub>(−i₂)。</span></div>
+  <div class="step"><b>③</b><span>把电压电流都换回一次侧。</span></div>
+  <div class="eq">N v₁ = Z<sub>L</sub> · (i₁/N)　⇒　v₁/i₁ = Z<sub>L</sub>/N²</div>
+  <div class="step"><b>④</b><span>注意方向：从一次侧看进去是 Z<sub>in</sub> = N²Z<sub>L</sub>。</span></div>
+  <div class="eq">Z<sub>in</sub> = <b>N² Z<sub>L</sub></b></div>
+  <p class="deriv-end">所以 1:2 的变压器把 8 Ω 负载“折”成 32 Ω；反过来，2:1 就把 32 Ω 折成 8 Ω。阻抗匹配就是靠这个平方关系。</p>
+</div>
+<div class="app">
+  <div class="ico">🔋</div>
+  <div><h4>现实里：充电头与电网升压</h4>
+  <p>手机充电头里有一个高频变压器，把电压降下来、把阻抗“折”到开关管舒服的数值。电网用升压变压器把电送到远方，再用降压变压器送到你家——都是为了减少线路损耗、匹配阻抗。</p></div>
+</div>
+    
+      
+<figure class="photo render3d"><img src="assets/3d/transformer.png" alt="小功率变压器：匝比决定电压比与阻抗折算。" loading="lazy"><figcaption>小功率变压器：匝比决定电压比与阻抗折算。 <span class="credit">Three.js 3D 渲染</span></figcaption></figure>
+    <div class="memo"><b>一句话记住</b><span>双口是模块，变压器是磁齿轮。</span></div><div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：等效与双口</span><span class="t-arrow">→</span><span class="t-now">本节</span><span class="t-arrow">→</span><span class="t-down">下游：反馈与匹配</span></div>
+    </section>
+
+    
+<section class="chapter" id="three-phase">
+  <div class="chapter-head">
+    <div class="chapter-num">16</div>
+    <div><h2>三相电路：三根线，一个旋转的场</h2><div class="tag">Y/Δ · 线电压 · 三相功率</div></div>
+  </div>
+  <p class="lead">单相电只能让一个线圈“来回推”；三相电让三个线圈按 120° 轮流推，合成一个匀速旋转的磁场。工业电机、电网、楼宇配电，基本都是三相。</p>
+
+  <figure class="figure">
+    <img class="figimg" src="assets/fig/plot_three_phase.png" alt="三相对称电压波形与相量星形图" loading="lazy">
+    <figcaption>三相对称电源：三路正弦幅值相等、相位互差 120°；线电压 U<sub>AB</sub> 是相电压的 √3 倍，并超前 30°</figcaption>
+  </figure>
+
+  <h3>一、对称三相电源</h3>
+  <p>三相对称电源由三个幅值相等、频率相同、相位互差 120° 的正弦源组成。以 A 相为参考：</p>
+  <div class="eq">u<sub>A</sub> = U<sub>m</sub> cos(ωt)<br>u<sub>B</sub> = U<sub>m</sub> cos(ωt − 120°)<br>u<sub>C</sub> = U<sub>m</sub> cos(ωt + 120°)</div>
+  <p>三者瞬时值之和恒为零：</p>
+  <div class="eq">u<sub>A</sub> + u<sub>B</sub> + u<sub>C</sub> = 0</div>
+  <p>这就是“三根线能代替六根线”的根本原因：对称时，返回电流在任意瞬间互相抵消。相序 A→B→C 叫正序；交换任意两根线，旋转磁场就会反转。</p>
+
+  <h3>二、Y 与 Δ：线量、相量</h3>
+  <p>先把三个词分清：<b>相电压</b>是每相绕组两端的电压，<b>线电压</b>是两根火线之间的电压；<b>相电流</b>是绕组里的电流，<b>线电流</b>是火线里的电流。</p>
+  <table>
+    <thead><tr><th>连接</th><th>线电压</th><th>线电流</th><th>相位关系</th></tr></thead>
+    <tbody>
+      <tr><td>Y（星形）</td><td>U<sub>L</sub> = √3 U<sub>P</sub></td><td>I<sub>L</sub> = I<sub>P</sub></td><td>线电压超前对应相电压 30°</td></tr>
+      <tr><td>Δ（三角形）</td><td>U<sub>L</sub> = U<sub>P</sub></td><td>I<sub>L</sub> = √3 I<sub>P</sub></td><td>线电流滞后对应相电流 30°</td></tr>
+    </tbody>
+  </table>
+  <p>这就是常说的“380 V、220 V”：Y 接时线电压 380 V，相电压 220 V，二者相差 √3 倍。</p>
+  <div class="eq">Y：U<sub>L</sub> = √3 U<sub>P</sub>，I<sub>L</sub> = I<sub>P</sub><br>Δ：U<sub>L</sub> = U<sub>P</sub>，I<sub>L</sub> = √3 I<sub>P</sub></div>
+
+  <h3>三、对称三相怎么算：只算一相</h3>
+  <p>如果电源对称、负载也对称，那么三相的电压、电流只是彼此相差 120° 的“复制品”。算出 A 相，B、C 相直接旋转 −120°、+120° 即可。</p>
+  <div class="deriv">
+    <h4>思路：把三相化成单相</h4>
+    <div class="step"><b>①</b><span>确认电源对称、负载对称；三线制或四线制都先看中性点。</span></div>
+    <div class="step"><b>②</b><span>Y 形负载：相电压 = 线电压 / √3，相电流 = 线电流。</span></div>
+    <div class="step"><b>③</b><span>Δ 形负载：先等效成 Y 形，Z<sub>Y</sub> = Z<sub>Δ</sub>/3，再按单相算。</span></div>
+    <div class="step"><b>④</b><span>写出 A 相电流，B、C 相把相位分别减、加 120°。</span></div>
+    <div class="step"><b>⑤</b><span>对称 Y 形且中线存在时，中线电流为零；中线可以去掉，但只对对称负载成立。</span></div>
+  </div>
+  <div class="eq">U<sub>A</sub> = U<sub>P</sub>∠0°，U<sub>B</sub> = U<sub>P</sub>∠−120°，U<sub>C</sub> = U<sub>P</sub>∠120°<br>I<sub>A</sub> = U<sub>A</sub>/Z<sub>Y</sub>，I<sub>B</sub> = I<sub>A</sub>∠−120°，I<sub>C</sub> = I<sub>A</sub>∠120°<br>I<sub>N</sub> = I<sub>A</sub> + I<sub>B</sub> + I<sub>C</sub> = 0（对称）</div>
+
+  <div class="split">
+    <div>
+      <h3 style="margin-top:0">例题：380 V 线电压，Y 形负载</h3>
+      <p>三相对称电源线电压 380 V，Y 形负载每相 Z = 10∠30° Ω。求相电压、相电流、三相有功和无功。</p>
+      <div class="eq">U<sub>P</sub> = 380/√3 ≈ 220 V<br>I<sub>P</sub> = 220/10 = 22 A<br>P = √3 × 380 × 22 × cos30° ≈ 12.5 kW<br>Q = √3 × 380 × 22 × sin30° ≈ 7.2 kvar</div>
+      <p>三个相电流大小相等，相位互差 120°；中线电流为零。每相负载吸收约 4.17 kW，三相合计 12.5 kW。</p>
+    </div>
+    <div class="note" style="margin-top:18px">
+      <b>为什么乘 √3：</b>三相总功率是三个单相功率之和。用线量写时，Y 接的相电压是 U<sub>L</sub>/√3，代入 3U<sub>P</sub>I<sub>P</sub>cosφ 就得到 √3U<sub>L</sub>I<sub>L</sub>cosφ；Δ 接的相电流是 I<sub>L</sub>/√3，结果相同。
+    </div>
+  </div>
+
+  <h3>四、三相功率</h3>
+  <p>对称三相的瞬时功率是恒定的，不像单相那样以 2ω 脉动；这是三相电机转矩平稳的原因。</p>
+  <div class="eq">P = 3U<sub>P</sub>I<sub>P</sub>cosφ = √3 U<sub>L</sub>I<sub>L</sub>cosφ<br>Q = 3U<sub>P</sub>I<sub>P</sub>sinφ = √3 U<sub>L</sub>I<sub>L</sub>sinφ<br>S = 3U<sub>P</sub>I<sub>P</sub> = √3 U<sub>L</sub>I<sub>L</sub></div>
+  <p>对称三相还可以用<b>两表法</b>测功率：两个瓦特计的读数 P₁、P₂ 之和就是三相总有功；无功可由 Q = √3(P₁ − P₂) 得到（注意接法与相序）。</p>
+
+  <h3>五、不对称与中线</h3>
+  <p>实际负载常常不对称：一相重、两相轻。这时三个相电流不再互差 120°，中线电流不再为零。</p>
+  <ul>
+    <li><b>四线制、中线可靠：</b>各相电压仍被电源钳住，负载各自工作，但中线电流可能很大。</li>
+    <li><b>三线制、无中线：</b>中性点会“漂移”，负载重的相电压降低、轻的相电压升高，可能烧坏设备。</li>
+    <li><b>中线不能装开关或熔断器：</b>中线一断，三相电压失去约束，这就是“断零”事故。</li>
+  </ul>
+  <div class="eq">I<sub>N</sub> = I<sub>A</sub> + I<sub>B</sub> + I<sub>C</sub> ≠ 0（不对称）</div>
+
+  <div class="pitfall"><b>别踩坑：</b>把线电压和相电压混用；Y 接用 U<sub>L</sub>=√3U<sub>P</sub>，Δ 接用 I<sub>L</sub>=√3I<sub>P</sub>，别记反；对称才能去掉中线；不对称时不要用“只算一相”的捷径。</div>
+
+  <div class="app">
+    <div class="ico">🏭</div>
+    <div><h4>现实里：工厂电机与楼宇配电</h4>
+    <p>三相异步电机接三根火线就能产生旋转磁场，结构简单、转矩平稳。楼宇配电把三相分到不同楼层，尽量让各相负载平衡；单相空调、照明最终都挂在某一相与中线之间。</p></div>
+  </div>
+
+  <div class="memo"><b>一句话记住</b><span>三相对称只算一相；Y 看 √3 电压，Δ 看 √3 电流；中线只对对称负载可省。</span></div>
+  <div class="thread"><span class="t-label">脉络</span><span class="t-up">上游：单相正弦稳态</span><span class="t-arrow">→</span><span class="t-now">本节：三相电路</span><span class="t-arrow">→</span><span class="t-down">下游：电机、配电与功率测量</span></div>
+</section>
+
+<section class="chapter" id="thread">
+  <div class="chapter-head">
+    <div class="chapter-num">★</div>
+    <div><h2>知识脉络：把整本书串成一条线</h2><div class="tag">从“点”到“网”</div></div>
+  </div>
+  <p class="lead">零散的知识点像零件，脉络才是装配图。整本书其实只有六条线；每条线都回答同一个问题：<b>“下一步为什么需要上一步？”</b></p>
+
+  
+  <h3 style="margin-top:26px">18 章，一条问题链</h3>
+  <p>每一章只回答一个“为什么需要它”的问题；右列是它交给下一章的“接口”。先看这张链，再看下面的六条线。</p>
+  <table class="terms chain-table">
+    <thead><tr><th>章节</th><th>只解决一个问题</th><th>核心公式 / 工具</th><th>它把什么交给下一章</th></tr></thead>
+    <tbody><tr><td>00 数学工具箱</td><td>公式背后的积木</td><td>y=kx+b</td><td>把“变化率/累积”变成可算的图</td></tr><tr><td>01 把电想成水</td><td>电压、电流、电阻是什么</td><td>v=Ri</td><td>从物理直觉进入可测量量</td></tr><tr><td>02 三个基本量</td><td>怎么测量、怎么规定方向</td><td>p=vi，w=∫p dt</td><td>给 KCL/KVL 提供变量</td></tr><tr><td>03 两条铁律</td><td>连接关系如何约束变量</td><td>Σi=0，Σv=0</td><td>把电路变成方程组</td></tr><tr><td>04 等效与戴维南</td><td>复杂网络如何变简单</td><td>v=Voc+Req i</td><td>给系统求解一个“黑箱”</td></tr><tr><td>05 节点/网孔</td><td>怎样通用地列方程</td><td>Gv=i，Zi=v</td><td>给受控源/动态电路提供解法</td></tr><tr><td>06 受控源与运放</td><td>电路怎么会放大</td><td>vo/vi=−Rf/Rin</td><td>把“有源”带入后续动态</td></tr><tr><td>07 储能元件</td><td>电路为什么有记忆</td><td>i=C dv/dt，v=L di/dt</td><td>给一阶/二阶提供状态量</td></tr><tr><td>08 一阶电路</td><td>怎样指数式趋近</td><td>y=y∞+(y0−y∞)e−t/τ</td><td>给二阶提供时间常数</td></tr><tr><td>09 二阶电路</td><td>为什么会振荡</td><td>s²+2ζω0s+ω0²=0</td><td>把“稳定”交给极点</td></tr><tr><td>10 相量</td><td>正弦稳态怎样变代数</td><td>V=ZI，ZR=R，ZL=jωL，ZC=1/(jωC)</td><td>把微分方程变成复数方程</td></tr><tr><td>11 交流功率</td><td>谁在真正做功</td><td>S=VI*，P=VIcosφ，Q=VIsinφ</td><td>给频响提供功率视角</td></tr><tr><td>12 频率响应</td><td>电路对不同频率的态度</td><td>H(jω)=Vout/Vin，AdB=20log|H|</td><td>把“一个频率”推广到“扫频率”</td></tr><tr><td>13 拉普拉斯</td><td>微积分怎样变代数</td><td>L{dx/dt}=sX−x(0)</td><td>把“稳态”推广到“全部复频率”</td></tr><tr><td>14 傅里叶</td><td>波形怎样拆成正弦</td><td>X(ω)=∫x(t)e−jωt dt</td><td>把“信号”拆成频谱</td></tr><tr><td>15 双口与变压器</td><td>模块怎样拼起来</td><td>z/y/ABCD/h，v2=Nv1，i2=−i1/N</td><td>把“电路”变成可复用模块</td></tr><tr><td>16 三相电路</td><td>三根线怎样一起供电</td><td>UL=√3UP，P=√3ULILcosφ</td><td>把单相扩展到三相系统</td></tr><tr><td>17 公式墙</td><td>怎样一页复习</td><td>—</td><td>把全书压成一张速查表</td></tr></tbody>
+  </table>
+
+  <div class="flow">
+    <div class="flow-head"><i style="background:#0e766e"></i>约束线：电路为什么“可解”</div>
+    <div class="flow-line">
+      <span class="flow-chip">三个基本量</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">端口 v-i</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">KCL / KVL</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">节点法 / 网孔法</span><span class="flow-arrow">→</span>
+      <span class="flow-chip flow-end">解出所有变量</span>
+    </div>
+    <p class="flow-note">元件关系给一半方程，连接关系给另一半；两条铁律把“电路”变成“方程组”。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-head"><i style="background:#2e75b6"></i>等效线：复杂怎么变简单</div>
+    <div class="flow-line">
+      <span class="flow-chip">欧姆定律</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">串并联</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">电源变换</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">叠加</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">戴维南 / 诺顿</span><span class="flow-arrow">→</span>
+      <span class="flow-chip flow-end">最大功率</span>
+    </div>
+    <p class="flow-note">等效只对外负责：端口关系一样，内部可以面目全非。戴维南是这条线的终点，也是后面“黑箱思维”的起点。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-head"><i style="background:#b45309"></i>有源线：电路怎么会“放大”</div>
+    <div class="flow-line">
+      <span class="flow-chip">受控源</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">负电阻</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">运放</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">反馈</span><span class="flow-arrow">→</span>
+      <span class="flow-chip flow-end">有源滤波 / 稳定</span>
+    </div>
+    <p class="flow-note">受控源让“别处的电压电流”能指挥这里；运放把这种指挥推到极限（增益无穷大），反馈再把极限拉回可用。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-head"><i style="background:#5b21b6"></i>动态线：电路为什么有“记忆”</div>
+    <div class="flow-line">
+      <span class="flow-chip">电容 / 电感</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">换路 0⁻/0⁺</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">一阶</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">二阶</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">极点</span><span class="flow-arrow">→</span>
+      <span class="flow-chip flow-end">稳定</span>
+    </div>
+    <p class="flow-note">储能元件把“过去”存成电压或电流；一阶是一个时间常数，二阶是两个储能元件“打架”，极点则把“稳定”变成一句几何判断。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-head"><i style="background:#0f7b6c"></i>变换线：微积分怎么变成代数</div>
+    <div class="flow-line">
+      <span class="flow-chip">正弦</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">相量</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">功率 / 频响</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">拉普拉斯</span><span class="flow-arrow">→</span>
+      <span class="flow-chip flow-end">傅里叶</span>
+    </div>
+    <p class="flow-note">相量是“只看一个频率”的拉氏；拉氏是“看所有复频率”的相量；傅里叶是“只站在虚轴上”的拉氏。三者是同一件事的三副面孔。</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-head"><i style="background:#8e3b6b"></i>双口线：模块怎么拼起来</div>
+    <div class="flow-line">
+      <span class="flow-chip">端口</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">z / y / ABCD / h</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">T 型 / π 型</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">变压器</span><span class="flow-arrow">→</span>
+      <span class="flow-chip flow-end">阻抗匹配</span>
+    </div>
+    <p class="flow-note">双口把“一个电路”变成“一个可复用的模块”；变压器则用磁场把两个模块的电压、电流、阻抗按匝比“咬合”起来。</p>
+  </div>
+
+<figure class="figure domain-figure">
+  <div class="domain-flow">
+    <div class="domain-card dt">
+      <div class="domain-kicker">时域</div>
+      <div class="eq domain-eq" data-tex="f(t)=F_m\cos(\omega t+\theta)">f(t) = F<sub>m</sub> cos(ωt+θ)</div>
+      <div class="domain-note">微分 / 积分方程</div>
+    </div>
+    <div class="domain-arrow"><span>取正弦稳态</span><b>→</b></div>
+    <div class="domain-card ph">
+      <div class="domain-kicker">相量</div>
+      <div class="eq domain-eq" data-tex="F=F_m e^{j\theta}">F = F<sub>m</sub> e<sup>jθ</sup></div>
+      <div class="domain-note">只看一个频率的稳态</div>
+    </div>
+    <div class="domain-arrow"><span>s = jω</span><b>→</b></div>
+    <div class="domain-card sp">
+      <div class="domain-kicker">s 域</div>
+      <div class="eq domain-eq" data-tex="F(s)=\int f(t)e^{-st}\,dt">F(s) = ∫f(t)e<sup>−st</sup>dt</div>
+      <div class="domain-note">全部复频率</div>
+    </div>
+    <div class="domain-arrow"><span>σ = 0</span><b>→</b></div>
+    <div class="domain-card fq">
+      <div class="domain-kicker">频域</div>
+      <div class="eq domain-eq" data-tex="F(j\omega)">F(jω)</div>
+      <div class="domain-note">虚轴切片</div>
+    </div>
+  </div>
+  <figcaption>相量、拉氏、傅里叶不是三门数学，而是同一件事在不同“切片”上的样子</figcaption>
+</figure>
+
+    <h3 style="margin-top:26px">六条线之间的“换乘站”</h3>
+  <table class="terms">
+    <tr><th>换乘</th><th>关系</th><th>一句话</th></tr>
+    <tr><td>相量 ↔ 拉氏</td><td>s = jω</td><td>只看稳态、只看一个频率，就是相量</td></tr>
+    <tr><td>拉氏 ↔ 傅里叶</td><td>σ = 0</td><td>站在虚轴上，拉氏就退化成傅里叶</td></tr>
+    <tr><td>时域 ↔ 频域</td><td>卷积 ↔ 相乘</td><td>时域里“卷”得头疼，频域里只是乘法</td></tr>
+    <tr><td>串联 ↔ 并联</td><td>电阻 ↔ 电导</td><td>对偶：公式长得一样，角色互换</td></tr>
+    <tr><td>节点 ↔ 网孔</td><td>KCL ↔ KVL</td><td>一个数“流出的电流”，一个数“绕圈的电压”</td></tr>
+    <tr><td>电容 ↔ 电感</td><td>v ↔ i</td><td>一个记电压，一个记电流；公式互抄</td></tr>
+    <tr><td>戴维南 ↔ 诺顿</td><td>v<sub>oc</sub> = R i<sub>sc</sub></td><td>同一黑箱的两种“包装”</td></tr>
+    <tr><td>一阶 ↔ 二阶</td><td>τ ↔ Q</td><td>一个时间常数；两个储能元件就开始“振”</td></tr>
+    <tr><td>运放 ↔ 受控源</td><td>μ → ∞</td><td>运放就是“增益无穷大的 VCVS”</td></tr>
+    <tr><td>双口 ↔ 变压器</td><td>z 参数 / 互感</td><td>变压器是一个特殊的双口</td></tr>
+  </table>
+
+  <div class="math-tip" style="margin-top:20px">
+    <b>怎么用这张网复习：</b>
+    <p>每学一个知识点，问自己三句：它的<b>上游</b>是谁（没有哪个概念它讲不通）？它的<b>下游</b>是谁（它解决了后面哪个问题）？它和哪条线是<b>对偶</b>（公式可以互抄）？</p>
+    <p>能答出这三句，知识就从“点”变成了“线”，再变成“网”。</p>
+  </div>
+</section>
+
+
+    <section class="chapter" id="formula">
+  <div class="chapter-head">
+    <div class="chapter-num">17</div>
+    <div><h2>公式墙与术语表</h2><div class="tag">一页纸速查</div></div>
+  </div>
+  <p class="lead">公式不是用来背的，而是用来“想起来”的。下面按依赖关系分组：先基本量，再电阻电路，再动态、正弦、变换域，最后双口与变压器。</p>
+
+  <div class="formula-grid">
+    <div class="formula-card">
+      <h4>① 基本量</h4>
+      <p>v<sub>ab</sub> = −v<sub>ba</sub></p>
+      <p>q = Cv，λ = Li</p>
+      <p>q(t) = q₀ + ∫i dt</p>
+      <p>p = vi（关联方向）</p>
+      <p>w = ∫p dt</p>
+    </div>
+    <div class="formula-card">
+      <h4>② 电阻电路</h4>
+      <p>v = Ri，i = Gv</p>
+      <p>R<sub>串</sub> = R₁ + R₂</p>
+      <p>G<sub>并</sub> = G₁ + G₂</p>
+      <p>v₂ = R₂/(R₁+R₂)·v</p>
+      <p>i₁ = R₂/(R₁+R₂)·i</p>
+    </div>
+    <div class="formula-card">
+      <h4>③ 等效与定理</h4>
+      <p>v<sub>s</sub> = R i<sub>s</sub></p>
+      <p>v = v<sub>oc</sub> + R<sub>eq</sub>i</p>
+      <p>i<sub>sc</sub> = v<sub>oc</sub>/R<sub>eq</sub></p>
+      <p>P<sub>max</sub> = v<sub>oc</sub>²/(4R<sub>eq</sub>)</p>
+      <p>R<sub>L</sub> = R<sub>eq</sub></p>
+    </div>
+    <div class="formula-card">
+      <h4>④ 动态元件</h4>
+      <p>i = C dv/dt</p>
+      <p>v = L di/dt</p>
+      <p>w<sub>C</sub> = ½Cv²</p>
+      <p>w<sub>L</sub> = ½Li²</p>
+      <p>τ = RC 或 L/R</p>
+      <p>y = y<sub>∞</sub> + (y<sub>0</sub> − y<sub>∞</sub>)e<sup>−t/τ</sup></p>
+    </div>
+    <div class="formula-card">
+      <h4>⑤ 二阶与稳定</h4>
+      <p>s² + 2ζω₀s + ω₀² = 0</p>
+      <p>ω₀ = 1 / √(LC)</p>
+      <p>Q = 1/(2ζ)</p>
+      <p>ζ &lt; 1 欠阻尼，ζ = 1 临界，ζ &gt; 1 过阻尼</p>
+      <p>极点全在左半平面 → 稳定</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑥ 正弦稳态</h4>
+      <p>Z<sub>R</sub> = R，Z<sub>L</sub> = jωL，Z<sub>C</sub> = 1/(jωC)</p>
+      <p>V = ZI</p>
+      <p>ω₀ = 1 / √(LC)</p>
+      <p>Q = ω₀L/R（串联）</p>
+      <p>B = ω₀/Q</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑦ 功率</h4>
+      <p>P = V<sub>rms</sub>I<sub>rms</sub>cosφ</p>
+      <p>Q = V<sub>rms</sub>I<sub>rms</sub>sinφ</p>
+      <p>S = P + jQ</p>
+      <p>S² = P² + Q²</p>
+      <p>共轭匹配：Z<sub>L</sub> = Z<sub>eq</sub>*</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑧ 频率与 Bode</h4>
+      <p>A<sub>dB</sub> = 20log|H|</p>
+      <p>一阶低通：ω<sub>c</sub> = 1/RC</p>
+      <p>每极点 −20 dB/dec</p>
+      <p>GBW = A₀ω<sub>a</sub></p>
+      <p>B = ω₀/Q</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑨ 拉普拉斯</h4>
+      <p data-tex="\mathcal{L}\left\{\frac{dx}{dt}\right\}=sX-x(0^-)">L{dx/dt} = sX − x(0⁻)</p>
+      <p>V<sub>C</sub> = I/(sC) + v(0⁻)/s</p>
+      <p>V<sub>L</sub> = sLI − Li(0⁻)</p>
+      <p>Y(s) = H(s)X(s)</p>
+      <p>卷积 ↔ 相乘</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑩ 傅里叶</h4>
+      <p>X(ω) = ∫x(t)e<sup>−jωt</sup>dt</p>
+      <p>c<sub>n</sub> = (1/T)∫x(t)e<sup>−jnω₀t</sup>dt</p>
+      <p>方波谐波 ∝ 1/n</p>
+      <p>∫|x|²dt = (1/2π)∫|X|²dω</p>
+      <p>负频率 ↔ 共轭对称</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑪ 双口</h4>
+      <p>V₁ = z₁₁I₁ + z₁₂I₂</p>
+      <p>V₂ = z₂₁I₁ + z₂₂I₂</p>
+      <p>级联：ABCD 相乘</p>
+      <p>串联：z 相加；并联：y 相加</p>
+      <p>互易：z₁₂ = z₂₁</p>
+    </div>
+    <div class="formula-card">
+      <h4>⑫ 变压器</h4>
+      <p>λ₁ = L₁i₁ + Mi₂</p>
+      <p>k = M/√(L₁L₂)</p>
+      <p>v₂ = Nv₁，i₂ = −i₁/N</p>
+      <p>Z<sub>in</sub> = N²Z<sub>L</sub></p>
+      <p>理想变压器功率为零</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px">术语中英对照</h3>
+  <table class="terms">
+    <tr><th>中文</th><th>English</th><th>一句话解释</th></tr>
+    <tr><td>节点</td><td>node</td><td>擦掉元件身体后连成一片的导体</td></tr>
+    <tr><td>支路</td><td>branch</td><td>一个二端元件所在的“一条路”</td></tr>
+    <tr><td>参考方向</td><td>reference direction</td><td>人为规定的正方向，反接只改符号</td></tr>
+    <tr><td>无源符号约定</td><td>passive sign convention</td><td>电流从电压“＋”端流入</td></tr>
+    <tr><td>等效</td><td>equivalent</td><td>端口电压电流关系相同</td></tr>
+    <tr><td>戴维南等效</td><td>Thevenin equivalent</td><td>开路电压串等效电阻</td></tr>
+    <tr><td>诺顿等效</td><td>Norton equivalent</td><td>短路电流并等效电阻</td></tr>
+    <tr><td>受控源</td><td>dependent source</td><td>大小由别处电压或电流决定</td></tr>
+    <tr><td>虚短 / 虚断</td><td>virtual short / open</td><td>运放两输入等压、不取电流</td></tr>
+    <tr><td>时间常数</td><td>time constant</td><td>走完约 63% 变化所需时间</td></tr>
+    <tr><td>阻尼</td><td>damping</td><td>振荡被消耗的快慢</td></tr>
+    <tr><td>品质因数</td><td>quality factor</td><td>谐振峰尖锐程度的度量</td></tr>
+    <tr><td>相量</td><td>phasor</td><td>正弦的复数“快照”</td></tr>
+    <tr><td>阻抗</td><td>impedance</td><td>复数版的电阻</td></tr>
+    <tr><td>谐振</td><td>resonance</td><td>感抗与容抗互相抵消</td></tr>
+    <tr><td>功率因数</td><td>power factor</td><td>有功与视在功率之比</td></tr>
+    <tr><td>频率响应</td><td>frequency response</td><td>不同频率下的增益与相移</td></tr>
+    <tr><td>系统函数</td><td>system function</td><td>零初始条件下输出与输入的 s 域比</td></tr>
+    <tr><td>极点</td><td>pole</td><td>让系统函数趋于无穷的 s 值</td></tr>
+    <tr><td>频谱</td><td>spectrum</td><td>各频率分量的幅度与相位</td></tr>
+    <tr><td>双口</td><td>two-port</td><td>有两个端口的子电路</td></tr>
+    <tr><td>互感</td><td>mutual inductance</td><td>一个线圈的电流在另一个线圈感应电压</td></tr>
+    <tr><td>同名端</td><td>dot convention</td><td>标记绕向的黑点</td></tr>
+    <tr><td>理想变压器</td><td>ideal transformer</td><td>无损耗、全耦合、电感无穷大</td></tr>
+  </table>
+</section>
+
+
+    
+
+
+<!-- PDF-SUPPLEMENT-START -->
+<section class="chapter" id="pdf">
+  <div class="chapter-head">
+    <div class="chapter-num">18</div>
+    <div><h2>配套教材：章节原文</h2><div class="tag">PDF · 对照 · 查阅</div></div>
+  </div>
+  <p class="lead">这里把《电路》教材的章节原文按顺序放进网站。网页负责讲直觉、图和互动；原文负责查定义、看例题、对符号。两边对照着读，比只看其中一边更稳。</p>
+  <div class="pdf-grid">
+    <button class="pdf-card" type="button" data-pdf="assets/pdf/ch01-circuit-models.pdf" data-title="第 1 章 电路模型和电路定律"><span class="pdf-no">01</span><span class="pdf-body"><span class="pdf-name">电路模型和电路定律</span><span class="pdf-meta">2.2 MB · 对照 01–03 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch02-equivalent.pdf" data-title="第 2 章 电阻电路的等效变换"><span class="pdf-no">02</span><span class="pdf-body"><span class="pdf-name">电阻电路的等效变换</span><span class="pdf-meta">1.6 MB · 对照 04 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch03-general-analysis.pdf" data-title="第 3 章 电阻电路的一般分析"><span class="pdf-no">03</span><span class="pdf-body"><span class="pdf-name">电阻电路的一般分析</span><span class="pdf-meta">1.6 MB · 对照 05 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch04-theorems.pdf" data-title="第 4 章 电路定理"><span class="pdf-no">04</span><span class="pdf-body"><span class="pdf-name">电路定理</span><span class="pdf-meta">4.1 MB · 对照 04–05 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch06-storage.pdf" data-title="第 5 章 储能元件"><span class="pdf-no">05</span><span class="pdf-body"><span class="pdf-name">储能元件</span><span class="pdf-meta">2.0 MB · 对照 07 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch07-first-second-order.pdf" data-title="第 6 章 一阶与二阶电路的时域分析"><span class="pdf-no">06</span><span class="pdf-body"><span class="pdf-name">一阶与二阶电路的时域分析</span><span class="pdf-meta">7.5 MB · 对照 08–09 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch08-phasor.pdf" data-title="第 7 章 相量法"><span class="pdf-no">07</span><span class="pdf-body"><span class="pdf-name">相量法</span><span class="pdf-meta">1.9 MB · 对照 10 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch09-sinusoidal-steady.pdf" data-title="第 8 章 正弦稳态电路的分析"><span class="pdf-no">08</span><span class="pdf-body"><span class="pdf-name">正弦稳态电路的分析</span><span class="pdf-meta">3.7 MB · 对照 10–11 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch10-coupled-inductors.pdf" data-title="第 9 章 含有耦合电感的电路"><span class="pdf-no">09</span><span class="pdf-body"><span class="pdf-name">含有耦合电感的电路</span><span class="pdf-meta">4.1 MB · 对照 15 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch11-frequency-response.pdf" data-title="第 10 章 电路的频率响应"><span class="pdf-no">10</span><span class="pdf-body"><span class="pdf-name">电路的频率响应</span><span class="pdf-meta">3.3 MB · 对照 12 节</span></span></button>
+<button class="pdf-card" type="button" data-pdf="assets/pdf/ch12-three-phase.pdf" data-title="第 11 章 三相电路"><span class="pdf-no">11</span><span class="pdf-body"><span class="pdf-name">三相电路</span><span class="pdf-meta">2.6 MB · 对照 扩展 节</span></span></button>
+  </div>
+  <div class="pdf-viewer">
+    <div class="pdf-viewer-head"><b id="pdfTitle">选择一章开始阅读</b><a id="pdfOpen" href="#" target="_blank" rel="noopener" hidden>新标签打开 ↗</a></div>
+    <iframe id="pdfFrame" title="教材 PDF 阅读器" src="about:blank" loading="lazy"></iframe>
+  </div>
+  <div class="pitfall"><b>说明：</b>PDF 为原书章节，仅作对照查阅；请勿公开分发。若浏览器不能内嵌显示，点右上角“新标签打开”。</div>
+</section>
+<!-- PDF-SUPPLEMENT-END -->
+
+
+  </main>
+</div>
+
+<footer class="foot">
+  <p>基于 Artice M. Davis《Linear Circuit Analysis》的知识结构，用可视化重新讲一遍。</p>
+  <p><b>看图是入口，动手才是学会。</b>把每个互动拖到底，再自己画一遍电路，直觉就长出来了。</p>
+  <p class="credit"><a href="book.md" download>Markdown + LaTeX 源文件</a></p>
+  <p class="credit">实拍照片来自 Wikimedia Commons，按 CC BY / CC BY-SA / CC0 许可使用，详见各图说明。</p>
+</footer>
+
+<script src="assets/katex/katex.min.js"></script>
+<script src="../design-system/sites.js"></script>
+<script src="../design-system/chrome.js"></script>
+<script>window.SITE_MAP = {"nodes":[{"id":"math","label":"数学工具箱","short":"数学","group":"base","href":"#math"},{"id":"intro","label":"把电想成水","short":"电路","group":"base","href":"#intro"},{"id":"quantities","label":"三个基本量","short":"三量","group":"base","href":"#quantities"},{"id":"laws","label":"KCL / KVL","short":"KCL","group":"laws","href":"#laws"},{"id":"equivalent","label":"等效与戴维南","short":"等效","group":"laws","href":"#equivalent"},{"id":"methods","label":"节点与网孔","short":"节点","group":"laws","href":"#methods"},{"id":"active","label":"受控源与运放","short":"受控","group":"active","href":"#active"},{"id":"storage","label":"电容与电感","short":"储能","group":"dyn","href":"#storage"},{"id":"firstorder","label":"一阶电路","short":"一阶","group":"dyn","href":"#firstorder"},{"id":"secondorder","label":"二阶电路","short":"二阶","group":"dyn","href":"#secondorder"},{"id":"phasor","label":"相量与正弦","short":"相量","group":"ac","href":"#phasor"},{"id":"power","label":"交流功率","short":"功率","group":"ac","href":"#power"},{"id":"frequency","label":"频率与滤波","short":"频率","group":"ac","href":"#frequency"},{"id":"laplace","label":"拉普拉斯","short":"拉氏","group":"xform","href":"#laplace"},{"id":"fourier","label":"傅里叶","short":"傅氏","group":"xform","href":"#fourier"},{"id":"twoport","label":"双口与变压器","short":"双口","group":"out","href":"#twoport"},{"id":"formula","label":"公式墙","short":"公式","group":"out","href":"#formula"}],"edges":[["math","intro"],["intro","quantities"],["quantities","laws"],["laws","equivalent"],["equivalent","methods"],["methods","active"],["active","storage"],["storage","firstorder"],["firstorder","secondorder"],["secondorder","phasor"],["phasor","power"],["power","frequency"],["frequency","laplace"],["laplace","fourier"],["fourier","twoport"],["twoport","formula"],["math","quantities"],["laws","methods"],["storage","secondorder"],["phasor","frequency"],["laplace","frequency"],["fourier","twoport"],["active","twoport"],["math","formula"],["laws","active"]],"groups":{"base":"#2563eb","laws":"#0e766e","active":"#b45309","dyn":"#6b3fa0","ac":"#1d6b4f","xform":"#b3241c","out":"#8a3f06"}};</script>
+<script src="../design-system/math.js"></script>
+<script src="../design-system/graph.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  function run() {
+    if (window.RenderAllMath && window.katex) {
+      window.RenderAllMath.render(document.querySelector("main") || document.body);
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
+  else run();
+})();
+</script>
+</body>
+</html>
+
